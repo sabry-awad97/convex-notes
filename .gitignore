@@ -15,8 +15,8 @@ backend/Cargo.lock
 # Convex generated files
 convex/_generated/
 
-# Docker volumes
-convex-data/
+# Docker/Convex data
+data/
 
 # IDE
 .idea/

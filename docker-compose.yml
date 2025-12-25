@@ -7,7 +7,7 @@ services:
       - "3210:3210" # Convex API
       - "3211:3211" # HTTP Actions
     volumes:
-      - convex-data:/convex/data
+      - ./data:/convex/data
     environment:
       - CONVEX_CLOUD_ORIGIN=http://127.0.0.1:3210
       - CONVEX_SITE_ORIGIN=http://127.0.0.1:3211
@@ -29,5 +29,3 @@ services:
       backend:
         condition: service_healthy
 
-volumes:
-  convex-data:

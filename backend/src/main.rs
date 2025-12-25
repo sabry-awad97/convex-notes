@@ -1,11 +1,18 @@
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
+use chrono::{DateTime, Local, TimeZone};
+use colored::Colorize;
 use convex::{ConvexClient, FunctionResult, Value};
+use dialoguer::{theme::ColorfulTheme, Confirm, Input, Select};
+use envconfig::Envconfig;
 use futures::StreamExt;
-use std::{
-    collections::BTreeMap,
-    env,
-    io::{self, Write},
-};
+use prettytable::{format, Cell, Row, Table};
+use std::collections::BTreeMap;
+
+#[derive(Envconfig)]
+struct Config {
+    #[envconfig(from = "CONVEX_URL", default = "http://127.0.0.1:3210")]
+    convex_url: String,
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -13,54 +20,85 @@ async fn main() -> Result<()> {
     dotenvy::from_filename("../.env.local").ok();
     dotenvy::dotenv().ok();
 
-    let deployment_url =
-        env::var("CONVEX_URL").unwrap_or_else(|_| "http://127.0.0.1:3210".to_string());
+    let config = Config::init_from_env()?;
 
-    println!("🚀 Connecting to Convex at: {}", deployment_url);
+    print_banner();
+    println!(
+        "{} Connecting to {}...",
+        "🚀".bright_cyan(),
+        config.convex_url.bright_yellow()
+    );
 
-    let mut client = ConvexClient::new(&deployment_url).await?;
-    println!("✅ Connected to Convex backend!\n");
+    let mut client = ConvexClient::new(&config.convex_url).await?;
+    println!("{}\n", "✅ Connected to Convex backend!".bright_green());
 
     loop {
-        print_menu();
-        let choice = read_input("Enter your choice: ");
+        let options = vec![
+            "📋 List all notes",
+            "✏️  Create a new note",
+            "📝 Update a note",
+            "🗑️  Delete a note",
+            "👀 Watch notes (real-time)",
+            "🚪 Exit",
+        ];
 
-        match choice.trim() {
-            "1" => list_notes(&mut client).await?,
-            "2" => create_note(&mut client).await?,
-            "3" => update_note(&mut client).await?,
-            "4" => delete_note(&mut client).await?,
-            "5" => watch_notes(&mut client).await?,
-            "6" => {
-                println!("👋 Goodbye!");
+        let selection = Select::with_theme(&ColorfulTheme::default())
+            .with_prompt("What would you like to do?")
+            .items(&options)
+            .default(0)
+            .interact()?;
+
+        match selection {
+            0 => list_notes(&mut client).await?,
+            1 => create_note(&mut client).await?,
+            2 => update_note(&mut client).await?,
+            3 => delete_note(&mut client).await?,
+            4 => watch_notes(&mut client).await?,
+            5 => {
+                println!("\n{}", "👋 Goodbye!".bright_magenta());
                 break;
             }
-            _ => println!("❌ Invalid choice. Please try again.\n"),
+            _ => unreachable!(),
         }
+        println!();
     }
 
     Ok(())
 }
 
-fn print_menu() {
-    println!("╔═══════════════════════════════════╗");
-    println!("║     📝 Convex Notes Manager       ║");
-    println!("╠═══════════════════════════════════╣");
-    println!("║  1. List all notes                ║");
-    println!("║  2. Create a new note             ║");
-    println!("║  3. Update a note                 ║");
-    println!("║  4. Delete a note                 ║");
-    println!("║  5. Watch notes (real-time)       ║");
-    println!("║  6. Exit                          ║");
-    println!("╚═══════════════════════════════════╝");
-}
-
-fn read_input(prompt: &str) -> String {
-    print!("{}", prompt);
-    io::stdout().flush().unwrap();
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    input.trim().to_string()
+fn print_banner() {
+    println!();
+    println!(
+        "{}",
+        "╔══════════════════════════════════════════════════════════╗".bright_cyan()
+    );
+    println!(
+        "{}",
+        "║                                                          ║".bright_cyan()
+    );
+    println!(
+        "{}{}{}",
+        "║".bright_cyan(),
+        "           📝 CONVEX NOTES MANAGER                      "
+            .bright_white()
+            .bold(),
+        "║".bright_cyan()
+    );
+    println!(
+        "{}{}{}",
+        "║".bright_cyan(),
+        "         Self-Hosted • Rust Client • v0.1.0             ".bright_black(),
+        "║".bright_cyan()
+    );
+    println!(
+        "{}",
+        "║                                                          ║".bright_cyan()
+    );
+    println!(
+        "{}",
+        "╚══════════════════════════════════════════════════════════╝".bright_cyan()
+    );
+    println!();
 }
 
 fn get_string_field(obj: &BTreeMap<String, Value>, key: &str) -> String {
@@ -68,6 +106,22 @@ fn get_string_field(obj: &BTreeMap<String, Value>, key: &str) -> String {
         Some(Value::String(s)) => s.clone(),
         _ => String::new(),
     }
+}
+
+fn get_number_field(obj: &BTreeMap<String, Value>, key: &str) -> i64 {
+    match obj.get(key) {
+        Some(Value::Float64(n)) => *n as i64,
+        Some(Value::Int64(n)) => *n,
+        _ => 0,
+    }
+}
+
+fn format_timestamp(ts: i64) -> String {
+    Local
+        .timestamp_millis_opt(ts)
+        .single()
+        .map(|dt: DateTime<Local>| dt.format("%Y-%m-%d %H:%M").to_string())
+        .unwrap_or_else(|| "Unknown".to_string())
 }
 
 fn extract_value(result: FunctionResult) -> Result<Value> {
@@ -78,64 +132,86 @@ fn extract_value(result: FunctionResult) -> Result<Value> {
     }
 }
 
-fn display_notes(value: &Value) {
-    match value {
-        Value::Array(notes) => {
-            if notes.is_empty() {
-                println!("📭 No notes found.");
+fn display_notes_table(notes: &[Value]) {
+    let mut table = Table::new();
+    table.set_format(*format::consts::FORMAT_BOX_CHARS);
+
+    table.add_row(Row::new(vec![
+        Cell::new("ID").style_spec("bFc"),
+        Cell::new("Title").style_spec("bFy"),
+        Cell::new("Content").style_spec("bFw"),
+        Cell::new("Created").style_spec("bFm"),
+    ]));
+
+    for note in notes {
+        if let Value::Object(obj) = note {
+            let id = get_string_field(obj, "_id");
+            let short_id = if id.len() > 12 { &id[..12] } else { &id };
+            let title = get_string_field(obj, "title");
+            let content = get_string_field(obj, "content");
+            let content_preview = if content.len() > 40 {
+                format!("{}...", &content[..40])
             } else {
-                println!("\n┌─────────────────────────────────────────────────┐");
-                for note in notes {
-                    if let Value::Object(obj) = note {
-                        let id = format!("{:?}", obj.get("_id").unwrap_or(&Value::Null));
-                        let title = get_string_field(obj, "title");
-                        let content = get_string_field(obj, "content");
-                        let content_preview = if content.len() > 40 {
-                            format!("{}...", &content[..40])
-                        } else {
-                            content
-                        };
-                        println!(
-                            "│ 📌 {}",
-                            if title.is_empty() { "Untitled" } else { &title }
-                        );
-                        println!("│    ID: {}", id);
-                        println!(
-                            "│    {}",
-                            if content_preview.is_empty() {
-                                "No content"
-                            } else {
-                                &content_preview
-                            }
-                        );
-                        println!("├─────────────────────────────────────────────────┤");
-                    }
-                }
-                println!("└─────────────────────────────────────────────────┘");
-            }
+                content
+            };
+            let created = format_timestamp(get_number_field(obj, "createdAt"));
+
+            table.add_row(Row::new(vec![
+                Cell::new(short_id).style_spec("Fc"),
+                Cell::new(&title).style_spec("Fy"),
+                Cell::new(&content_preview),
+                Cell::new(&created).style_spec("Fm"),
+            ]));
         }
-        _ => println!("❌ Unexpected response format"),
     }
+
+    table.printstd();
 }
 
 async fn list_notes(client: &mut ConvexClient) -> Result<()> {
-    println!("\n📋 Fetching notes...");
+    println!("\n{}", "📋 Fetching notes...".bright_blue());
 
     let result = client.query("notes:list", maplit::btreemap! {}).await?;
     let value = extract_value(result)?;
-    display_notes(&value);
-    println!();
+
+    match value {
+        Value::Array(notes) => {
+            if notes.is_empty() {
+                println!(
+                    "\n{}",
+                    "📭 No notes found. Create your first one!".bright_yellow()
+                );
+            } else {
+                println!(
+                    "\n{} {} note(s)\n",
+                    "Found".bright_green(),
+                    notes.len().to_string().bright_white().bold()
+                );
+                display_notes_table(&notes);
+            }
+        }
+        _ => println!("{}", "❌ Unexpected response format".bright_red()),
+    }
+
     Ok(())
 }
 
 async fn create_note(client: &mut ConvexClient) -> Result<()> {
-    println!("\n✏️ Create a new note:");
+    println!("\n{}", "✏️ Create a new note".bright_green().bold());
 
-    let title = read_input("  Title: ");
-    let content = read_input("  Content: ");
+    let title: String = Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("Title")
+        .interact_text()?;
+
+    let content: String = Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("Content")
+        .interact_text()?;
+
+    // Or use editor for longer content
+    // let content = Editor::new().edit("Enter your note content...")?.unwrap_or_default();
 
     if title.is_empty() || content.is_empty() {
-        println!("❌ Title and content are required.\n");
+        println!("{}", "❌ Title and content are required.".bright_red());
         return Ok(());
     }
 
@@ -151,26 +227,70 @@ async fn create_note(client: &mut ConvexClient) -> Result<()> {
 
     match extract_value(result) {
         Ok(value) => {
-            println!("✅ Note '{}' created successfully!", title);
-            println!("   ID: {:?}\n", value);
+            println!(
+                "\n{} Note '{}' created!",
+                "✅".bright_green(),
+                title.bright_yellow()
+            );
+            println!("   {} {:?}", "ID:".bright_black(), value);
         }
-        Err(e) => println!("❌ Failed to create note: {}\n", e),
+        Err(e) => println!("{} {}", "❌ Failed to create note:".bright_red(), e),
     }
 
     Ok(())
 }
 
 async fn update_note(client: &mut ConvexClient) -> Result<()> {
-    println!("\n📝 Update a note:");
+    println!("\n{}", "📝 Update a note".bright_blue().bold());
 
-    let id = read_input("  Note ID (copy from list): ");
-    let title = read_input("  New title: ");
-    let content = read_input("  New content: ");
+    // First, list notes to pick from
+    let result = client.query("notes:list", maplit::btreemap! {}).await?;
+    let value = extract_value(result)?;
 
-    if id.is_empty() || title.is_empty() || content.is_empty() {
-        println!("❌ All fields are required.\n");
+    let notes = match value {
+        Value::Array(notes) if !notes.is_empty() => notes,
+        _ => {
+            println!("{}", "📭 No notes to update.".bright_yellow());
+            return Ok(());
+        }
+    };
+
+    let note_titles: Vec<String> = notes
+        .iter()
+        .filter_map(|n| {
+            if let Value::Object(obj) = n {
+                Some(get_string_field(obj, "title"))
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    let selection = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select a note to update")
+        .items(&note_titles)
+        .interact()?;
+
+    let selected_note = &notes[selection];
+    let (id, old_title, old_content) = if let Value::Object(obj) = selected_note {
+        (
+            get_string_field(obj, "_id"),
+            get_string_field(obj, "title"),
+            get_string_field(obj, "content"),
+        )
+    } else {
         return Ok(());
-    }
+    };
+
+    let title: String = Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("New title")
+        .default(old_title)
+        .interact_text()?;
+
+    let content: String = Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("New content")
+        .default(old_content)
+        .interact_text()?;
 
     let result = client
         .mutation(
@@ -184,20 +304,61 @@ async fn update_note(client: &mut ConvexClient) -> Result<()> {
         .await?;
 
     match extract_value(result) {
-        Ok(_) => println!("✅ Note updated successfully!\n"),
-        Err(e) => println!("❌ Failed to update note: {}\n", e),
+        Ok(_) => println!("\n{}", "✅ Note updated successfully!".bright_green()),
+        Err(e) => println!("{} {}", "❌ Failed to update note:".bright_red(), e),
     }
 
     Ok(())
 }
 
 async fn delete_note(client: &mut ConvexClient) -> Result<()> {
-    println!("\n🗑️ Delete a note:");
+    println!("\n{}", "🗑️ Delete a note".bright_red().bold());
 
-    let id = read_input("  Note ID (copy from list): ");
+    // First, list notes to pick from
+    let result = client.query("notes:list", maplit::btreemap! {}).await?;
+    let value = extract_value(result)?;
 
-    if id.is_empty() {
-        println!("❌ Note ID is required.\n");
+    let notes = match value {
+        Value::Array(notes) if !notes.is_empty() => notes,
+        _ => {
+            println!("{}", "📭 No notes to delete.".bright_yellow());
+            return Ok(());
+        }
+    };
+
+    let note_titles: Vec<String> = notes
+        .iter()
+        .filter_map(|n| {
+            if let Value::Object(obj) = n {
+                Some(get_string_field(obj, "title"))
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    let selection = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select a note to delete")
+        .items(&note_titles)
+        .interact()?;
+
+    let selected_note = &notes[selection];
+    let (id, title) = if let Value::Object(obj) = selected_note {
+        (get_string_field(obj, "_id"), get_string_field(obj, "title"))
+    } else {
+        return Ok(());
+    };
+
+    let confirm = Confirm::with_theme(&ColorfulTheme::default())
+        .with_prompt(format!(
+            "Are you sure you want to delete '{}'?",
+            title.bright_yellow()
+        ))
+        .default(false)
+        .interact()?;
+
+    if !confirm {
+        println!("{}", "❌ Cancelled.".bright_yellow());
         return Ok(());
     }
 
@@ -211,27 +372,50 @@ async fn delete_note(client: &mut ConvexClient) -> Result<()> {
         .await?;
 
     match extract_value(result) {
-        Ok(_) => println!("✅ Note deleted successfully!\n"),
-        Err(e) => println!("❌ Failed to delete note: {}\n", e),
+        Ok(_) => println!(
+            "\n{} Note '{}' deleted.",
+            "✅".bright_green(),
+            title.bright_red().strikethrough()
+        ),
+        Err(e) => println!("{} {}", "❌ Failed to delete note:".bright_red(), e),
     }
 
     Ok(())
 }
 
 async fn watch_notes(client: &mut ConvexClient) -> Result<()> {
-    println!("\n👀 Watching notes for real-time updates...");
-    println!("   (Press Ctrl+C to stop)\n");
+    println!(
+        "\n{}",
+        "👀 Watching notes for real-time updates..."
+            .bright_magenta()
+            .bold()
+    );
+    println!("{}", "   Press Ctrl+C to stop".bright_black());
+    println!();
 
     let mut subscription = client.subscribe("notes:list", maplit::btreemap! {}).await?;
 
     while let Some(result) = subscription.next().await {
-        println!("📨 Update received:");
+        println!(
+            "{} {}",
+            "📨".bright_cyan(),
+            "Update received:".bright_white()
+        );
         match result {
-            FunctionResult::Value(value) => display_notes(&value),
-            FunctionResult::ErrorMessage(msg) => println!("❌ Error: {}", msg),
-            FunctionResult::ConvexError(e) => println!("❌ Convex error: {:?}", e),
+            FunctionResult::Value(Value::Array(notes)) => {
+                if notes.is_empty() {
+                    println!("   {}", "No notes".bright_yellow());
+                } else {
+                    display_notes_table(&notes);
+                }
+            }
+            FunctionResult::Value(_) => println!("   {}", "Unexpected format".bright_yellow()),
+            FunctionResult::ErrorMessage(msg) => println!("   {} {}", "Error:".bright_red(), msg),
+            FunctionResult::ConvexError(e) => {
+                println!("   {} {:?}", "Convex error:".bright_red(), e)
+            }
         }
-        println!("─────────────────────────────────────────────────");
+        println!("{}", "─".repeat(50).bright_black());
     }
 
     Ok(())

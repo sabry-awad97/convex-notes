@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+bun.lockb
+package-lock.json
+
+# Rust build artifacts
+backend/target/
+backend/Cargo.lock
+
+# Environment files (contain secrets)
+.env.local
+.env
+.env.*.local
+
+# Convex generated files
+convex/_generated/
+
+# Docker volumes
+convex-data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build outputs
+dist/
+build/

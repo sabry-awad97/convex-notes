@@ -1,0 +1,219 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  BACKEND_DIR: backend
+  CONVEX_DIR: convex
+
+env:
+  CONVEX_URL: http://127.0.0.1:3210
+
+tasks:
+  # ============================================================================
+  # 🚀 Main Commands
+  # ============================================================================
+
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list-all
+
+  setup:
+    desc: Install all dependencies
+    cmds:
+      - task: install:npm
+      - task: frontend:install
+      - task: install:rust
+
+  dev:
+    desc: Start full development environment (Docker + Convex + Rust)
+    deps: [docker:up]
+    cmds:
+      - echo "🚀 Starting development environment..."
+      - echo "📝 Run 'task convex:dev' in another terminal"
+      - echo "🦀 Run 'task rust:run' after Convex is ready"
+
+  # ============================================================================
+  # 🐳 Docker Commands
+  # ============================================================================
+
+  docker:up:
+    desc: Start Convex backend with Docker
+    cmds:
+      - docker compose up -d
+      - echo "✅ Convex backend started"
+      - echo "📊 Dashboard available at http://localhost:9999"
+
+  docker:down:
+    desc: Stop Convex backend
+    cmds:
+      - docker compose down
+      - echo "🛑 Convex backend stopped"
+
+  docker:logs:
+    desc: View Docker container logs
+    cmds:
+      - docker compose logs -f
+
+  docker:restart:
+    desc: Restart Convex backend
+    cmds:
+      - docker compose restart
+      - echo "🔄 Convex backend restarted"
+
+  docker:clean:
+    desc: Stop and remove all containers and volumes
+    cmds:
+      - docker compose down -v
+      - echo "🧹 Cleaned up Docker resources"
+
+  # ============================================================================
+  # 🔑 Admin Commands
+  # ============================================================================
+
+  admin:key:
+    desc: Generate a new admin key
+    cmds:
+      - docker compose exec backend ./generate_admin_key.sh
+      - echo ""
+      - echo "📝 Copy the key above to .env.local"
+
+  # ============================================================================
+  # 📦 Convex Commands
+  # ============================================================================
+
+  convex:dev:
+    desc: Start Convex development server (push functions + watch)
+    cmds:
+      - npx convex dev
+
+  convex:push:
+    desc: Push Convex functions to backend
+    cmds:
+      - npx convex deploy
+      - echo "✅ Functions pushed to backend"
+
+  convex:codegen:
+    desc: Generate Convex type definitions
+    cmds:
+      - npx convex codegen
+
+  # ============================================================================
+  # ⚛️ Frontend Commands
+  # ============================================================================
+
+  frontend:install:
+    desc: Install frontend dependencies
+    dir: frontend
+    cmds:
+      - bun install || npm install
+      - echo "✅ Frontend dependencies installed"
+
+  frontend:dev:
+    desc: Start frontend dev server
+    dir: frontend
+    cmds:
+      - bun run dev || npm run dev
+
+  frontend:build:
+    desc: Build frontend for production
+    dir: frontend
+    cmds:
+      - bun run build || npm run build
+      - echo "✅ Frontend built"
+
+  frontend:preview:
+    desc: Preview production build
+    dir: frontend
+    cmds:
+      - bun run preview || npm run preview
+
+  # ============================================================================
+  # 🦀 Rust Commands
+  # ============================================================================
+
+  rust:build:
+    desc: Build Rust client
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo build
+      - echo "✅ Rust client built"
+
+  rust:run:
+    desc: Run Rust client
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo run
+
+  rust:watch:
+    desc: Build and run on file changes
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo watch -x run
+
+  rust:check:
+    desc: Check Rust code for errors
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo check
+
+  rust:test:
+    desc: Run Rust tests
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo test
+
+  rust:clean:
+    desc: Clean Rust build artifacts
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo clean
+      - echo "🧹 Cleaned Rust build artifacts"
+
+  # ============================================================================
+  # 📥 Install Commands
+  # ============================================================================
+
+  install:npm:
+    desc: Install NPM dependencies
+    cmds:
+      - bun install || npm install
+      - echo "✅ NPM dependencies installed"
+
+  install:rust:
+    desc: Install Rust dependencies
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo fetch
+      - echo "✅ Rust dependencies fetched"
+
+  install:tools:
+    desc: Install recommended development tools
+    cmds:
+      - cargo install cargo-watch
+      - echo "✅ Development tools installed"
+
+  # ============================================================================
+  # 🧹 Utility Commands
+  # ============================================================================
+
+  clean:
+    desc: Clean all build artifacts
+    cmds:
+      - task: rust:clean
+      - rm -rf node_modules
+      - echo "🧹 All build artifacts cleaned"
+
+  format:
+    desc: Format all code
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo fmt
+      - echo "✅ Code formatted"
+
+  lint:
+    desc: Lint Rust code
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - cargo clippy

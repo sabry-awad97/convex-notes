@@ -240,3 +240,20 @@ tasks:
     dir: python-cli
     cmds:
       - uv run ruff check src/
+
+  # ============================================================================
+  # 🥟 Bun CLI Commands
+  # ============================================================================
+
+  bun:install:
+    desc: Install Bun CLI dependencies
+    dir: bun-cli
+    cmds:
+      - bun install
+      - echo "✅ Bun dependencies installed"
+
+  bun:run:
+    desc: Run Bun CLI
+    dir: bun-cli
+    cmds:
+      - bun run src/index.ts

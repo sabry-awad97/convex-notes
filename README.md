@@ -11,6 +11,7 @@
 <img src="https://img.shields.io/badge/🐍_PYTHON-CLI-3776AB?style=for-the-badge&labelColor=1a1a2e" alt="Python">
 <img src="https://img.shields.io/badge/🥟_BUN-CLI-FBF0DF?style=for-the-badge&labelColor=1a1a2e" alt="Bun">
 <img src="https://img.shields.io/badge/🐹_GO-CLI-00ADD8?style=for-the-badge&labelColor=1a1a2e" alt="Go">
+<img src="https://img.shields.io/badge/⚡_ZIG-CLI-F7A41D?style=for-the-badge&labelColor=1a1a2e" alt="Zig">
 <img src="https://img.shields.io/badge/⚛️_REACT-19-61DAFB?style=for-the-badge&labelColor=1a1a2e" alt="React">
 
 <br><br>
@@ -26,6 +27,7 @@
 [🐍 Python](#-python-cli) &nbsp;•&nbsp;
 [🥟 Bun](#-bun-cli) &nbsp;•&nbsp;
 [🐹 Go](#-go-cli) &nbsp;•&nbsp;
+[⚡ Zig](#-zig-cli) &nbsp;•&nbsp;
 [⚛️ React](#%EF%B8%8F-react-frontend)
 
 <br>
@@ -253,6 +255,33 @@ go-cli/
 | `uber/fx`     | Dependency injection |
 | `survey`      | CLI prompts          |
 | `tablewriter` | Pretty tables        |
+
+<br>
+
+---
+
+<br>
+
+## ⚡ Zig CLI
+
+> _Pure Zig with std.http.Client_
+
+```
+zig-cli/src/
+├── main.zig          # Entry point
+├── app.zig           # Menu loop
+├── entity/           # Note types
+├── repository/       # HTTP client
+├── service/          # Business logic
+├── handler/          # Commands
+└── ui/               # ANSI colors
+```
+
+| Feature | Implementation            |
+| ------- | ------------------------- |
+| HTTP    | `std.http.Client`         |
+| I/O     | `std.Io.Threaded`         |
+| Memory  | `GeneralPurposeAllocator` |
 
 <br>
 

@@ -281,3 +281,20 @@ tasks:
     cmds:
       - go build -o convex-notes-cli .
       - echo "✅ Built convex-notes-cli"
+
+  # ============================================================================
+  # ⚡ Zig CLI Commands
+  # ============================================================================
+
+  zig:build:
+    desc: Build Zig CLI
+    dir: zig-cli
+    cmds:
+      - zig build
+      - echo "✅ Zig CLI built"
+
+  zig:run:
+    desc: Run Zig CLI
+    dir: zig-cli
+    cmds:
+      - zig build run

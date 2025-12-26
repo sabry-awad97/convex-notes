@@ -144,7 +144,7 @@ tasks:
     desc: Run Rust client
     dir: "{{.BACKEND_DIR}}"
     cmds:
-      - cargo run
+      - cargo run -p cli
 
   rust:watch:
     desc: Build and run on file changes

@@ -1,0 +1,20 @@
+[package]
+name = "cli"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "convex-notes"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+colored.workspace = true
+dialoguer.workspace = true
+futures.workspace = true
+prettytable-rs.workspace = true
+tokio.workspace = true
+
+common = { path = "../common" }
+db = { path = "../db" }
+convex-client = { path = "../convex-client" }

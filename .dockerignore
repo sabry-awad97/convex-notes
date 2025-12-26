@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Rust build artifacts
+backend/target/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Convex generated
+convex/_generated/
+
+# Data directories
+data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+!docker-compose.yml
+
+# Build outputs
+dist/
+build/

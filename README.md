@@ -1,242 +1,242 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Convex-Self--Hosted-FF6B6B?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyTDIgN2wxMCA1IDEwLTV6Ii8+PC9zdmc+" alt="Convex">
-  <img src="https://img.shields.io/badge/Rust-CLI-DDA15E?style=for-the-badge&logo=rust" alt="Rust">
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react" alt="React">
-  <img src="https://img.shields.io/badge/Docker-Powered-2496ED?style=for-the-badge&logo=docker" alt="Docker">
-</p>
+<div align="center">
 
-<h1 align="center">📝 Convex Notes</h1>
+<!-- Hero Section with Animated Gradient Background Effect -->
+<br>
 
-<p align="center">
-  <strong>A beautiful, self-hosted notes application with real-time sync</strong><br>
-  <sub>Built with Convex • Rust • React • Docker</sub>
-</p>
+<img src="https://img.shields.io/badge/🔥_SELF--HOSTED-Convex_Backend-FF6B6B?style=for-the-badge&labelColor=1a1a2e" alt="Convex">
+<img src="https://img.shields.io/badge/🦀_RUST-CLI_Client-DDA15E?style=for-the-badge&labelColor=1a1a2e" alt="Rust">
+<img src="https://img.shields.io/badge/⚛️_REACT-19_+_Vite_7-61DAFB?style=for-the-badge&labelColor=1a1a2e" alt="React">
+<img src="https://img.shields.io/badge/🐘_POSTGRES-Database-336791?style=for-the-badge&labelColor=1a1a2e" alt="PostgreSQL">
 
-<p align="center">
-  <a href="#-features">Features</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-rust-cli">Rust CLI</a> •
-  <a href="#-react-frontend">Frontend</a>
-</p>
+<br><br>
+
+# 📝 Convex Notes
+
+### ✨ _A stunning, self-hosted real-time notes application_ ✨
+
+<br>
+
+**[⚡ Quick Start](#-quick-start)** &nbsp;•&nbsp;
+**[🏗️ Architecture](#%EF%B8%8F-architecture)** &nbsp;•&nbsp;
+**[🦀 CLI](#-rust-cli)** &nbsp;•&nbsp;
+**[⚛️ Frontend](#%EF%B8%8F-react-frontend)** &nbsp;•&nbsp;
+**[📚 Docs](#-documentation)**
+
+<br>
+
+<img src="https://img.shields.io/badge/Live_Sync-WebSocket-10B981?style=flat-square&logo=socket.io&logoColor=white" alt="WebSocket">
+<img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker">
+<img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind">
+<img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+
+</div>
+
+<br>
 
 ---
 
-## ✨ Features
+<br>
+
+## 🎯 Why Convex Notes?
+
+> **Own your data. Control your backend. Build in Rust.**
 
 <table>
 <tr>
-<td width="50%">
-
-### 🦀 Rust CLI
-
-- Interactive terminal UI with colors
-- Fuzzy-select menus with `dialoguer`
-- Beautiful tables with `prettytable-rs`
-- Real-time subscriptions via WebSocket
-- Environment config with `envconfig`
-
+<td align="center" width="25%">
+<br>
+<img width="50" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/docker.svg" alt="Docker">
+<br><br>
+<strong>🏠 Self-Hosted</strong>
+<br>
+<sub>No cloud lock-in<br>Full data ownership</sub>
+<br><br>
 </td>
-<td width="50%">
-
-### ⚛️ React Frontend
-
-- Modern glassmorphism design
-- Real-time updates with Convex React
-- TailwindCSS v4 styling
-- TanStack Router navigation
-- Fully responsive layout
-
+<td align="center" width="25%">
+<br>
+<img width="50" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/rust.svg" alt="Rust">
+<br><br>
+<strong>🦀 Rust Powered</strong>
+<br>
+<sub>Blazing fast CLI<br>Memory safe</sub>
+<br><br>
 </td>
-</tr>
-<tr>
-<td>
-
-### 🐳 Self-Hosted Backend
-
-- No cloud dependency
-- Local SQLite storage
-- Full data ownership
-- Easy Docker deployment
-- Admin dashboard included
-
+<td align="center" width="25%">
+<br>
+<img width="50" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" alt="React">
+<br><br>
+<strong>⚛️ Modern UI</strong>
+<br>
+<sub>React 19 + Vite 7<br>Glassmorphism</sub>
+<br><br>
 </td>
-<td>
-
-### 🔄 Real-Time Sync
-
-- Instant updates across all clients
-- WebSocket subscriptions
-- Optimistic UI updates
-- Offline-first architecture
-- Conflict-free data sync
-
+<td align="center" width="25%">
+<br>
+<img width="50" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/clock.svg" alt="Realtime">
+<br><br>
+<strong>⚡ Real-Time</strong>
+<br>
+<sub>WebSocket sync<br>Instant updates</sub>
+<br><br>
 </td>
 </tr>
 </table>
 
+<br>
+
 ---
+
+<br>
 
 ## 🏗️ Architecture
 
+<br>
+
 ```mermaid
-graph TB
-    subgraph "🐳 Docker Environment"
-        subgraph "Convex Stack"
-            BE["🔧 Backend<br/><code>:3210</code>"]
-            HA["🌐 HTTP Actions<br/><code>:3211</code>"]
-            DB[("💾 SQLite<br/>./data")]
-            DASH["📊 Dashboard<br/><code>:9999</code>"]
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#fff', 'primaryBorderColor': '#818cf8', 'lineColor': '#a5b4fc', 'secondaryColor': '#1e1b4b', 'tertiaryColor': '#312e81', 'background': '#0f172a', 'mainBkg': '#1e293b', 'nodeBorder': '#818cf8', 'clusterBkg': '#1e1b4b40', 'clusterBorder': '#6366f150', 'titleColor': '#e0e7ff', 'edgeLabelBackground': '#1e293b'}}}%%
+
+flowchart TB
+    subgraph DOCKER["🐳 &nbsp; DOCKER COMPOSE"]
+        direction TB
+
+        subgraph DB_LAYER["💾 &nbsp; Data Layer"]
+            PG[("🐘 PostgreSQL<br/>───────────<br/>Port 5432")]
+        end
+
+        subgraph CONVEX["⚙️ &nbsp; Convex Backend"]
+            API["🔧 API Server<br/>───────────<br/>Port 3210"]
+            HTTP["🌐 HTTP Actions<br/>───────────<br/>Port 3211"]
+        end
+
+        subgraph ADMIN["� &nbsp; Admin"]
+            DASH["Dashboard<br/>───────────<br/>Port 9999"]
         end
     end
 
-    subgraph "👨‍💻 Developer Machine"
-        subgraph "Rust Client"
-            RC["🦀 CLI App"]
-            WS1["📡 WebSocket"]
-        end
-
-        subgraph "React Frontend"
-            FE["⚛️ Vite Dev Server<br/><code>:3000</code>"]
-            WS2["📡 WebSocket"]
-        end
-
-        subgraph "Convex Functions"
-            FN["📄 notes.ts"]
-            SC["📋 schema.ts"]
-        end
+    subgraph CLIENTS["👨‍💻 &nbsp; CLIENT APPLICATIONS"]
+        direction LR
+        RUST["🦀 Rust CLI<br/>───────────<br/>Interactive"]
+        REACT["⚛️ React App<br/>───────────<br/>Port 3000"]
     end
 
-    RC --> WS1
-    WS1 <-->|"Real-time"| BE
-    FE --> WS2
-    WS2 <-->|"Real-time"| BE
-    BE <--> DB
-    BE --> HA
-    DASH -->|"Admin"| BE
-    FN -->|"npx convex dev"| BE
-    SC -->|"Schema"| BE
+    subgraph FUNCTIONS["� &nbsp; CONVEX FUNCTIONS"]
+        direction LR
+        NOTES["📄 notes.ts"]
+        SCHEMA["📋 schema.ts"]
+    end
 
-    style BE fill:#ff6b6b,stroke:#333,color:#fff
-    style RC fill:#dda15e,stroke:#333,color:#fff
-    style FE fill:#61dafb,stroke:#333,color:#333
-    style DB fill:#577590,stroke:#333,color:#fff
-    style DASH fill:#9b5de5,stroke:#333,color:#fff
+    RUST <-. "⚡ WebSocket" .-> API
+    REACT <-. "⚡ WebSocket" .-> API
+    API <--> PG
+    API --> HTTP
+    DASH --> API
+    NOTES -.-> API
+    SCHEMA -.-> API
+
+    style PG fill:#336791,stroke:#5A8DB8,stroke-width:2px,color:#fff
+    style API fill:#ef4444,stroke:#f87171,stroke-width:2px,color:#fff
+    style HTTP fill:#f59e0b,stroke:#fbbf24,stroke-width:2px,color:#000
+    style DASH fill:#8b5cf6,stroke:#a78bfa,stroke-width:2px,color:#fff
+    style RUST fill:#dda15e,stroke:#e5b97e,stroke-width:2px,color:#000
+    style REACT fill:#61dafb,stroke:#81e4fc,stroke-width:2px,color:#000
 ```
+
+<br>
 
 ---
 
+<br>
+
 ## 🚀 Quick Start
 
-### Prerequisites
+<br>
 
-| Tool        | Purpose               | Install                              |
-| ----------- | --------------------- | ------------------------------------ |
-| 🐳 Docker   | Run Convex backend    | [docker.com](https://docker.com)     |
-| 🦀 Rust     | CLI application       | [rustup.rs](https://rustup.rs)       |
-| 📦 Bun/Node | Frontend & Convex CLI | [bun.sh](https://bun.sh)             |
-| 📋 Task     | Task automation       | [taskfile.dev](https://taskfile.dev) |
+### 📋 Prerequisites
 
-### One-Command Setup
+|     | Tool       | Purpose           | Install                                |
+| :-: | :--------- | :---------------- | :------------------------------------- |
+| 🐳  | **Docker** | Container runtime | [↗ docker.com](https://docker.com)     |
+| 🦀  | **Rust**   | CLI application   | [↗ rustup.rs](https://rustup.rs)       |
+| 📦  | **Bun**    | Package manager   | [↗ bun.sh](https://bun.sh)             |
+| 📋  | **Task**   | Task automation   | [↗ taskfile.dev](https://taskfile.dev) |
+
+<br>
+
+### ⚡ Express Setup
 
 ```bash
-# Clone and enter the project
-git clone <repo-url> && cd convex-notes
-
-# Install everything
-task setup
+task setup && task docker:up && task admin:key
+# Copy key to .env.local, then:
+task convex:dev      # Terminal 1
+task frontend:dev    # Terminal 2
+task rust:run        # Terminal 3
 ```
 
-### Step-by-Step Guide
+<br>
+
+### 📖 Step-by-Step
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'lineColor': '#a5b4fc', 'textColor': '#e2e8f0', 'background': '#0f172a'}}}%%
+
 flowchart LR
-    subgraph "1️⃣ Backend"
-        A[docker compose up] --> B[Generate Key]
-    end
+    A["🐳<br/>Docker Up"]
+    B["🔑<br/>Admin Key"]
+    C["📝<br/>Env Config"]
+    D["📦<br/>Convex Dev"]
+    E["🚀<br/>Run Apps"]
 
-    subgraph "2️⃣ Functions"
-        B --> C[Update .env.local]
-        C --> D[npx convex dev]
-    end
+    A --> B --> C --> D --> E
 
-    subgraph "3️⃣ Clients"
-        D --> E[Frontend: bun run dev]
-        D --> F[Rust: cargo run]
-    end
-
-    style A fill:#ff6b6b,stroke:#333,color:#fff
-    style B fill:#feca57,stroke:#333,color:#333
-    style C fill:#48dbfb,stroke:#333,color:#333
-    style D fill:#1dd1a1,stroke:#333,color:#333
-    style E fill:#61dafb,stroke:#333,color:#333
-    style F fill:#dda15e,stroke:#333,color:#333
+    style A fill:#ef4444,stroke:#fca5a5,stroke-width:2px,color:#fff
+    style B fill:#f59e0b,stroke:#fcd34d,stroke-width:2px,color:#000
+    style C fill:#06b6d4,stroke:#67e8f9,stroke-width:2px,color:#000
+    style D fill:#10b981,stroke:#6ee7b7,stroke-width:2px,color:#000
+    style E fill:#8b5cf6,stroke:#c4b5fd,stroke-width:2px,color:#fff
 ```
+
+<br>
 
 <details>
-<summary><strong>📖 Detailed Instructions</strong></summary>
+<summary><kbd>� Click for detailed commands</kbd></summary>
 
-#### 1. Start the Docker Backend
+<br>
 
 ```bash
+# 1️⃣ Start Docker services
 task docker:up
-# or: docker compose up -d
-```
 
-> 💡 The backend will be available at `http://127.0.0.1:3210`  
-> 📊 Dashboard at `http://localhost:9999`
-
-#### 2. Generate Admin Key
-
-```bash
+# 2️⃣ Generate admin key
 task admin:key
-# or: docker compose exec backend ./generate_admin_key.sh
-```
 
-Copy the generated key to `.env.local`:
+# 3️⃣ Update .env.local with the key
+# CONVEX_SELF_HOSTED_ADMIN_KEY='your-key-here'
 
-```env
-CONVEX_SELF_HOSTED_URL='http://127.0.0.1:3210'
-CONVEX_SELF_HOSTED_ADMIN_KEY='convex-self-hosted|your-key-here'
-CONVEX_URL='http://127.0.0.1:3210'
-```
-
-#### 3. Push Convex Functions
-
-```bash
+# 4️⃣ Push Convex functions (keep running)
 task convex:dev
-# or: npx convex dev
-```
 
-> ⏳ Keep this terminal running - it watches for changes
-
-#### 4. Start the Frontend
-
-```bash
-task frontend:dev
-# or: cd frontend && bun run dev
-```
-
-> 🌐 Open http://localhost:3000
-
-#### 5. Run the Rust CLI
-
-```bash
-task rust:run
-# or: cd backend && cargo run
+# 5️⃣ Start apps (separate terminals)
+task frontend:dev  # React at :3000
+task rust:run      # Rust CLI
 ```
 
 </details>
 
+<br>
+
 ---
+
+<br>
 
 ## 🦀 Rust CLI
 
-A beautiful terminal application with interactive menus and colored output.
+<br>
 
-### Screenshots
+> ### _Beautiful terminal experience with interactive menus_
 
-```
+<br>
+
+```ansi
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
 ║           📝 CONVEX NOTES MANAGER                        ║
@@ -256,127 +256,167 @@ A beautiful terminal application with interactive menus and colored output.
   🚪 Exit
 ```
 
-### Dependencies
+<br>
 
-| Crate            | Purpose             |
-| ---------------- | ------------------- |
-| `convex`         | Convex Rust client  |
-| `colored`        | Terminal colors     |
-| `dialoguer`      | Interactive prompts |
-| `prettytable-rs` | Formatted tables    |
-| `envconfig`      | Configuration       |
-| `chrono`         | Date formatting     |
-| `tokio`          | Async runtime       |
+### 📦 Dependencies
 
-### Data Flow
+| Crate            | Purpose             |     |
+| :--------------- | :------------------ | :-: |
+| `convex`         | Convex client SDK   | 🔗  |
+| `colored`        | Terminal colors     | 🎨  |
+| `dialoguer`      | Interactive prompts | 💬  |
+| `prettytable-rs` | Formatted tables    | 📊  |
+| `envconfig`      | Config management   | ⚙️  |
+| `chrono`         | Date/time           | 🕐  |
+| `tokio`          | Async runtime       | ⚡  |
+| `futures`        | Stream handling     | 🌊  |
+
+<br>
+
+### 🔄 Data Flow
 
 ```mermaid
-sequenceDiagram
-    participant User
-    participant CLI as 🦀 Rust CLI
-    participant Convex as 🔧 Backend
-    participant DB as 💾 SQLite
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'actorBkg': '#1e293b', 'actorBorder': '#818cf8', 'actorTextColor': '#e0e7ff', 'signalColor': '#a5b4fc', 'signalTextColor': '#e0e7ff', 'labelBoxBkgColor': '#312e81', 'labelBoxBorderColor': '#6366f1', 'labelTextColor': '#e0e7ff', 'loopTextColor': '#c4b5fd', 'noteBkgColor': '#3730a3', 'noteTextColor': '#e0e7ff', 'noteBorderColor': '#6366f1', 'activationBkgColor': '#4f46e5', 'activationBorderColor': '#818cf8', 'sequenceNumberColor': '#fff'}}}%%
 
-    User->>CLI: Select "Create Note"
-    CLI->>CLI: dialoguer::Input
-    User->>CLI: Enter title & content
-    CLI->>Convex: mutation("notes:create")
-    Convex->>DB: INSERT
-    DB-->>Convex: Success
-    Convex-->>CLI: FunctionResult::Value(id)
-    CLI->>CLI: colored output ✅
-    CLI-->>User: "Note created!"
+sequenceDiagram
+    autonumber
+
+    participant U as 👤 User
+    participant C as 🦀 CLI
+    participant B as ⚙️ Backend
+    participant D as � Postgres
+
+    rect rgba(99, 102, 241, 0.15)
+        Note over U,D: ✏️ Create Note Flow
+        U->>C: Enter title & content
+        C->>+B: mutation("notes:create")
+        B->>D: INSERT INTO notes
+        D-->>B: ✓ Success
+        B-->>-C: FunctionResult::Value(id)
+        C-->>U: ✅ "Note created!"
+    end
+
+    rect rgba(16, 185, 129, 0.15)
+        Note over U,D: 📡 Real-time Subscription
+        C->>B: subscribe("notes:list")
+        loop Every Change
+            B-->>C: Updated notes array
+            C-->>U: 🔄 Display refresh
+        end
+    end
 ```
+
+<br>
 
 ---
 
+<br>
+
 ## ⚛️ React Frontend
 
-A modern, glassmorphism-styled notes interface with real-time updates.
+<br>
 
-### Tech Stack
+> ### _Modern glassmorphism UI with real-time updates_
+
+<br>
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'lineColor': '#818cf8'}}}%%
+
 mindmap
-  root((Frontend))
-    Build
+  root((⚛️<br/>Frontend))
+    🔧 Build Stack
       Vite 7
       TypeScript
       React 19
-    Styling
+    🎨 Styling
       TailwindCSS 4
       Glassmorphism
-      Gradients
-    Routing
+      Dark Mode
+    🛣️ Navigation
       TanStack Router
-      File-based routes
-    Data
+      File-based
+    📡 Data Layer
       Convex React
-      Real-time sync
+      Real-time Sync
       Optimistic UI
-    Components
+    🧩 Components
       shadcn/ui
       Lucide Icons
 ```
 
-### Features
+<br>
 
-- 🎨 **Dark mode** with purple gradient backgrounds
-- 💫 **Glassmorphism** cards with backdrop blur
-- ⚡ **Instant updates** via Convex subscriptions
-- 📱 **Responsive** design for all screen sizes
-- 🔄 **Optimistic UI** for snappy interactions
+### ✨ Features
+
+|     | Feature             | Description                 |
+| :-: | :------------------ | :-------------------------- |
+|  �  | **Dark Mode**       | Purple gradient backgrounds |
+| 💫  | **Glassmorphism**   | Cards with backdrop blur    |
+| ⚡  | **Instant Updates** | Convex subscriptions        |
+| 📱  | **Responsive**      | All screen sizes            |
+|  �  | **Optimistic UI**   | Snappy interactions         |
+
+<br>
 
 ---
+
+<br>
 
 ## 📁 Project Structure
 
+<br>
+
 ```
-convex-notes/
-├── 🐳 docker-compose.yml      # Self-hosted Convex stack
-├── 📋 Taskfile.yml            # Task automation (task --list)
-├── 🔐 .env.local              # Secrets (gitignored)
-├── 📦 package.json            # Root dependencies
+📦 convex-notes/
 │
-├── 📂 convex/                 # Convex backend functions
-│   ├── schema.ts              # Database schema
-│   └── notes.ts               # CRUD mutations/queries
+├── 🐳 docker-compose.yml     ← PostgreSQL + Convex + Dashboard
+├── 📋 Taskfile.yml           ← Task automation
+├── 🔐 .env.local             ← Environment secrets
 │
-├── 🦀 backend/                # Rust CLI application
-│   ├── Cargo.toml             # Rust dependencies
+├── 📂 convex/                ← Backend functions
+│   ├── schema.ts             ← Database schema
+│   └── notes.ts              ← CRUD operations
+│
+├── 🦀 backend/               ← Rust CLI
+│   ├── Cargo.toml
+│   └── src/main.rs
+│
+├── ⚛️ frontend/              ← React app
 │   └── src/
-│       └── main.rs            # CLI entrypoint
+│       ├── hooks/useNotes.ts
+│       └── routes/index.tsx
 │
-├── ⚛️ frontend/               # React application
-│   ├── index.html             # Entry HTML
-│   ├── package.json           # Frontend deps
-│   ├── vite.config.ts         # Vite configuration
-│   └── src/
-│       ├── main.tsx           # React entrypoint
-│       ├── hooks/
-│       │   └── useNotes.ts    # Convex data hook
-│       ├── routes/
-│       │   └── index.tsx      # Notes page
-│       └── integrations/
-│           └── convex/        # Convex setup
-│
-└── 📂 data/                   # SQLite storage (gitignored)
+└── 💾 data/                  ← Local persistence
+    ├── postgres/             ← PostgreSQL data
+    └── convex/               ← Convex cache
 ```
+
+<br>
 
 ---
 
+<br>
+
 ## 📝 Database Schema
 
+<br>
+
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1' }}}%%
+
 erDiagram
     NOTES {
-        string _id PK "Auto-generated ID"
-        string title "Note title"
-        string content "Note content"
-        number createdAt "Unix timestamp (ms)"
-        number updatedAt "Unix timestamp (ms)"
+        string _id PK "Auto-generated"
+        string title "Required"
+        string content "Required"
+        number createdAt "Unix ms"
+        number updatedAt "Unix ms"
     }
 ```
+
+<details>
+<summary><kbd>📄 View TypeScript Schema</kbd></summary>
 
 ```typescript
 // convex/schema.ts
@@ -390,73 +430,98 @@ export default defineSchema({
 });
 ```
 
----
+</details>
 
-## 🛠️ Available Tasks
-
-Run `task` to see all available commands:
-
-| Command               | Description               |
-| --------------------- | ------------------------- |
-| `task setup`          | Install all dependencies  |
-| `task docker:up`      | Start Convex backend      |
-| `task docker:down`    | Stop Convex backend       |
-| `task docker:logs`    | View backend logs         |
-| `task admin:key`      | Generate admin key        |
-| `task convex:dev`     | Push & watch functions    |
-| `task frontend:dev`   | Start React dev server    |
-| `task frontend:build` | Build for production      |
-| `task rust:run`       | Run Rust CLI              |
-| `task rust:watch`     | Auto-rebuild on changes   |
-| `task rust:check`     | Check for errors          |
-| `task clean`          | Clean all build artifacts |
+<br>
 
 ---
+
+<br>
+
+## 🛠️ Task Commands
+
+<br>
+
+| Command             | Description            |
+| :------------------ | :--------------------- |
+| `task`              | List all commands      |
+| `task setup`        | Install everything     |
+| `task docker:up`    | Start containers       |
+| `task docker:down`  | Stop containers        |
+| `task docker:logs`  | View logs              |
+| `task admin:key`    | Generate admin key     |
+| `task convex:dev`   | Push & watch functions |
+| `task frontend:dev` | Start React            |
+| `task rust:run`     | Run CLI                |
+| `task rust:watch`   | Auto-rebuild           |
+
+<br>
+
+---
+
+<br>
 
 ## 🔗 Service URLs
 
-| Service             | URL                   | Description          |
-| ------------------- | --------------------- | -------------------- |
-| 🔧 **Backend**      | http://127.0.0.1:3210 | Convex API endpoint  |
-| 🌐 **HTTP Actions** | http://127.0.0.1:3211 | HTTP action handlers |
-| 📊 **Dashboard**    | http://localhost:9999 | Admin interface      |
-| ⚛️ **Frontend**     | http://localhost:3000 | React application    |
+<br>
+
+|     | Service       | URL                     | Description  |
+| :-: | :------------ | :---------------------- | :----------- |
+| 🔧  | **Backend**   | `http://127.0.0.1:3210` | Convex API   |
+| 🌐  | **HTTP**      | `http://127.0.0.1:3211` | HTTP Actions |
+| 📊  | **Dashboard** | `http://localhost:9999` | Admin UI     |
+| ⚛️  | **Frontend**  | `http://localhost:3000` | React App    |
+| 🐘  | **Postgres**  | `localhost:5432`        | Database     |
+
+<br>
 
 ---
 
-## 🐛 Troubleshooting
+<br>
+
+## � Documentation
+
+<br>
 
 <details>
-<summary><strong>🚫 Port already in use</strong></summary>
+<summary><kbd>🚫 Port already in use</kbd></summary>
 
-Windows Hyper-V may reserve ports. Check with:
+<br>
+
+Windows Hyper-V may reserve ports:
 
 ```powershell
 netsh interface ipv4 show excludedportrange protocol=tcp
 ```
 
-Solution: Change the port in `docker-compose.yml`
+Change ports in `docker-compose.yml` if needed.
 
 </details>
 
 <details>
-<summary><strong>🔌 Can't connect to backend</strong></summary>
+<summary><kbd>🔌 Connection failed</kbd></summary>
 
-1. Check Docker is running: `docker ps`
-2. Verify backend health: `docker compose logs backend`
-3. Ensure `.env.local` has correct `CONVEX_URL`
+<br>
+
+1. Check Docker: `docker ps`
+2. View logs: `task docker:logs`
+3. Verify `.env.local` has correct `CONVEX_URL`
 
 </details>
 
 <details>
-<summary><strong>📦 Functions not found</strong></summary>
+<summary><kbd>📦 Functions not found</kbd></summary>
+
+<br>
 
 Run `task convex:dev` and wait for "Convex functions ready!"
 
 </details>
 
 <details>
-<summary><strong>🦀 Rust compilation errors</strong></summary>
+<summary><kbd>🦀 Rust errors</kbd></summary>
+
+<br>
 
 ```bash
 cargo check  # See detailed errors
@@ -465,14 +530,20 @@ cargo clean  # Clear cache and rebuild
 
 </details>
 
----
-
-## 📄 License
-
-MIT © 2024
+<br>
 
 ---
 
-<p align="center">
-  Made with ❤️ using <a href="https://convex.dev">Convex</a>, <a href="https://rust-lang.org">Rust</a>, and <a href="https://react.dev">React</a>
-</p>
+<br>
+
+<div align="center">
+
+**Built with ❤️ using**
+
+[Convex](https://convex.dev) &nbsp;•&nbsp; [Rust](https://rust-lang.org) &nbsp;•&nbsp; [React](https://react.dev) &nbsp;•&nbsp; [PostgreSQL](https://postgresql.org)
+
+<br>
+
+<sub>MIT License © 2025</sub>
+
+</div>

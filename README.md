@@ -7,10 +7,11 @@
 <br>
 
 <img src="https://img.shields.io/badge/🔥_SELF--HOSTED-Convex_Backend-FF6B6B?style=for-the-badge&labelColor=1a1a2e" alt="Convex">
-<img src="https://img.shields.io/badge/🦀_RUST-CLI_Client-DDA15E?style=for-the-badge&labelColor=1a1a2e" alt="Rust">
-<img src="https://img.shields.io/badge/🐍_PYTHON-CLI_Client-3776AB?style=for-the-badge&labelColor=1a1a2e" alt="Python">
-<img src="https://img.shields.io/badge/🥟_BUN-CLI_Client-FBF0DF?style=for-the-badge&labelColor=1a1a2e" alt="Bun">
-<img src="https://img.shields.io/badge/⚛️_REACT-19_+_Vite_7-61DAFB?style=for-the-badge&labelColor=1a1a2e" alt="React">
+<img src="https://img.shields.io/badge/🦀_RUST-CLI-DDA15E?style=for-the-badge&labelColor=1a1a2e" alt="Rust">
+<img src="https://img.shields.io/badge/🐍_PYTHON-CLI-3776AB?style=for-the-badge&labelColor=1a1a2e" alt="Python">
+<img src="https://img.shields.io/badge/🥟_BUN-CLI-FBF0DF?style=for-the-badge&labelColor=1a1a2e" alt="Bun">
+<img src="https://img.shields.io/badge/🐹_GO-CLI-00ADD8?style=for-the-badge&labelColor=1a1a2e" alt="Go">
+<img src="https://img.shields.io/badge/⚛️_REACT-19-61DAFB?style=for-the-badge&labelColor=1a1a2e" alt="React">
 
 <br><br>
 
@@ -21,10 +22,10 @@
 <br>
 
 [⚡ Quick Start](#-quick-start) &nbsp;•&nbsp;
-[🏗️ Architecture](#%EF%B8%8F-architecture) &nbsp;•&nbsp;
 [🦀 Rust](#-rust-cli) &nbsp;•&nbsp;
 [🐍 Python](#-python-cli) &nbsp;•&nbsp;
 [🥟 Bun](#-bun-cli) &nbsp;•&nbsp;
+[🐹 Go](#-go-cli) &nbsp;•&nbsp;
 [⚛️ React](#%EF%B8%8F-react-frontend)
 
 <br>
@@ -32,7 +33,7 @@
 <img src="https://img.shields.io/badge/Live_Sync-WebSocket-10B981?style=flat-square&logo=socket.io&logoColor=white" alt="WebSocket">
 <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker">
 <img src="https://img.shields.io/badge/Clean_Architecture-SOLID-9333ea?style=flat-square" alt="Clean Architecture">
-<img src="https://img.shields.io/badge/PostgreSQL-17-336791?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL">
+<img src="https://img.shields.io/badge/Uber_FX-DI-00ADD8?style=flat-square" alt="Uber FX">
 
 </div>
 
@@ -48,50 +49,35 @@
 
 <table>
 <tr>
-<td align="center" width="20%">
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/docker.svg" alt="Docker">
 <br>
-<img width="40" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/docker.svg" alt="Docker">
-<br><br>
 <strong>🏠 Self-Hosted</strong>
-<br>
-<sub>No cloud lock-in</sub>
-<br><br>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/rust.svg" alt="Rust">
 <br>
-<img width="40" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/rust.svg" alt="Rust">
-<br><br>
-<strong>🦀 Rust CLI</strong>
-<br>
-<sub>Blazing fast</sub>
-<br><br>
+<strong>🦀 Rust</strong>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/python.svg" alt="Python">
 <br>
-<img width="40" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/python.svg" alt="Python">
-<br><br>
-<strong>🐍 Python CLI</strong>
-<br>
-<sub>Rich terminal</sub>
-<br><br>
+<strong>🐍 Python</strong>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/bun.svg" alt="Bun">
 <br>
-<img width="40" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/bun.svg" alt="Bun">
-<br><br>
-<strong>🥟 Bun CLI</strong>
-<br>
-<sub>TypeScript</sub>
-<br><br>
+<strong>🥟 Bun</strong>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/go.svg" alt="Go">
 <br>
-<img width="40" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" alt="React">
-<br><br>
+<strong>🐹 Go</strong>
+</td>
+<td align="center" width="16%">
+<img width="36" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/react.svg" alt="React">
+<br>
 <strong>⚛️ React</strong>
-<br>
-<sub>Modern UI</sub>
-<br><br>
 </td>
 </tr>
 </table>
@@ -104,16 +90,13 @@
 
 ## 🏗️ Architecture
 
-<br>
-
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#fff', 'primaryBorderColor': '#818cf8', 'lineColor': '#a5b4fc', 'background': '#0f172a', 'mainBkg': '#1e293b'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'background': '#0f172a'}}}%%
 
 flowchart TB
-    subgraph DOCKER["🐳 DOCKER COMPOSE"]
-        PG[("🐘 PostgreSQL<br/>:5432")]
-        API["⚙️ Convex API<br/>:3210"]
-        DASH["📊 Dashboard<br/>:9999"]
+    subgraph DOCKER["🐳 DOCKER"]
+        PG[("🐘 PostgreSQL")]
+        API["⚙️ Convex :3210"]
     end
 
     subgraph CLIENTS["👨‍💻 CLI CLIENTS"]
@@ -121,20 +104,20 @@ flowchart TB
         RUST["🦀 Rust"]
         PYTHON["🐍 Python"]
         BUN["🥟 Bun"]
-        REACT["⚛️ React<br/>:3000"]
+        GO["🐹 Go"]
+        REACT["⚛️ React"]
     end
 
-    RUST & PYTHON & BUN & REACT <-. "WebSocket" .-> API
+    RUST & PYTHON & BUN & GO & REACT <-. "WebSocket/HTTP" .-> API
     API <--> PG
-    DASH --> API
 
-    style PG fill:#336791,stroke:#5A8DB8,color:#fff
-    style API fill:#ef4444,stroke:#f87171,color:#fff
-    style DASH fill:#8b5cf6,stroke:#a78bfa,color:#fff
-    style RUST fill:#dda15e,stroke:#e5b97e,color:#000
-    style PYTHON fill:#3776ab,stroke:#5a9bd4,color:#fff
-    style BUN fill:#fbf0df,stroke:#f9d68b,color:#000
-    style REACT fill:#61dafb,stroke:#81e4fc,color:#000
+    style PG fill:#336791,color:#fff
+    style API fill:#ef4444,color:#fff
+    style RUST fill:#dda15e,color:#000
+    style PYTHON fill:#3776ab,color:#fff
+    style BUN fill:#fbf0df,color:#000
+    style GO fill:#00add8,color:#fff
+    style REACT fill:#61dafb,color:#000
 ```
 
 <br>
@@ -145,62 +128,31 @@ flowchart TB
 
 ## 🚀 Quick Start
 
-<br>
-
 ### 📋 Prerequisites
 
-|     | Tool       | Purpose         | Install                              |
-| :-: | :--------- | :-------------- | :----------------------------------- |
-| 🐳  | **Docker** | Containers      | [docker.com](https://docker.com)     |
-| 🦀  | **Rust**   | Rust CLI        | [rustup.rs](https://rustup.rs)       |
-| 🐍  | **uv**     | Python CLI      | [astral.sh/uv](https://astral.sh/uv) |
-| 🥟  | **Bun**    | Bun CLI         | [bun.sh](https://bun.sh)             |
-| 📋  | **Task**   | Task automation | [taskfile.dev](https://taskfile.dev) |
-
-<br>
+| Tool      | Purpose    | Install                              |
+| --------- | ---------- | ------------------------------------ |
+| 🐳 Docker | Containers | [docker.com](https://docker.com)     |
+| 🦀 Rust   | Rust CLI   | [rustup.rs](https://rustup.rs)       |
+| 🐍 uv     | Python CLI | [astral.sh/uv](https://astral.sh/uv) |
+| 🥟 Bun    | Bun CLI    | [bun.sh](https://bun.sh)             |
+| 🐹 Go     | Go CLI     | [go.dev](https://go.dev)             |
 
 ### ⚡ Express Setup
 
 ```bash
-# Start everything
 task setup && task docker:up && task admin:key
+# Copy admin key to .env.local
 
-# Copy the admin key to .env.local, then run:
-task convex:dev      # Terminal 1 - Push functions
-task frontend:dev    # Terminal 2 - React frontend
+task convex:dev      # Terminal 1
+task frontend:dev    # Terminal 2
 
-# Run ANY CLI (pick one):
-task rust:run        # 🦀 Rust CLI
-task python:run      # 🐍 Python CLI
-task bun:run         # 🥟 Bun CLI
+# Pick ANY CLI:
+task rust:run        # 🦀 Rust
+task python:run      # 🐍 Python
+task bun:run         # 🥟 Bun
+task go:run          # 🐹 Go
 ```
-
-<details>
-<summary><kbd>📋 Detailed Commands</kbd></summary>
-
-<br>
-
-```bash
-# 1️⃣ Start Docker services
-task docker:up
-
-# 2️⃣ Generate admin key
-task admin:key
-
-# 3️⃣ Update .env.local with the generated key
-# CONVEX_SELF_HOSTED_ADMIN_KEY='your-key-here'
-
-# 4️⃣ Push Convex functions (keep running)
-task convex:dev
-
-# 5️⃣ Start applications
-task frontend:dev  # React at http://localhost:3000
-task rust:run      # Rust CLI
-task python:run    # Python CLI
-task bun:run       # Bun CLI
-```
-
-</details>
 
 <br>
 
@@ -210,21 +162,7 @@ task bun:run       # Bun CLI
 
 ## 🦀 Rust CLI
 
-> _Blazing fast with clean architecture_
-
-```
-╔══════════════════════════════════════════════════════════╗
-║           📝 CONVEX NOTES MANAGER                        ║
-║         Self-Hosted • Rust Client • v0.1.0               ║
-╚══════════════════════════════════════════════════════════╝
-
-? What would you like to do?
-❯ 📋 List all notes
-  ✏️  Create a new note
-  📝 Update a note
-  🗑️  Delete a note
-  👀 Watch notes (real-time)
-```
+> _Blazing fast with async Convex SDK_
 
 ```
 backend/crates/
@@ -234,11 +172,11 @@ backend/crates/
 └── cli/            # UI & handlers
 ```
 
-| Crate       | Purpose         |
-| :---------- | :-------------- |
-| `convex`    | Backend SDK     |
-| `dialoguer` | CLI prompts     |
-| `colored`   | Terminal colors |
+| Crate       | Purpose       |
+| ----------- | ------------- |
+| `convex`    | Native SDK    |
+| `dialoguer` | CLI prompts   |
+| `tokio`     | Async runtime |
 
 <br>
 
@@ -248,34 +186,21 @@ backend/crates/
 
 ## 🐍 Python CLI
 
-> _Beautiful Rich terminal with Pydantic validation_
-
-```
-╭──────────────────────────────────────────────────────────╮
-│           📝 CONVEX NOTES MANAGER                        │
-│         Self-Hosted • Python Client • v0.1.0             │
-╰──────────────────────────────────────────────────────────╯
-
-What would you like to do?
-  1. 📋 List all notes
-  2. ✏️  Create a new note
-  3. 📝 Update a note
-```
+> _Beautiful Rich terminal with Pydantic_
 
 ```
 python-cli/src/convex_notes/
 ├── entity/         # Pydantic models
 ├── repository/     # Protocol + Convex
 ├── service/        # Business logic
-├── handlers/       # Commands
-└── ui/             # Rich components
+└── handlers/       # Commands
 ```
 
 | Package    | Purpose          |
-| :--------- | :--------------- |
-| `convex`   | Backend SDK      |
+| ---------- | ---------------- |
+| `convex`   | Python SDK       |
 | `rich`     | Beautiful output |
-| `pydantic` | Data validation  |
+| `pydantic` | Validation       |
 
 <br>
 
@@ -288,18 +213,6 @@ python-cli/src/convex_notes/
 > _TypeScript with @clack/prompts_
 
 ```
-╔══════════════════════════════════════════════════════════╗
-║           📝 CONVEX NOTES MANAGER                        ║
-║         Self-Hosted • Bun Client • v0.1.0                ║
-╚══════════════════════════════════════════════════════════╝
-
-◆  What would you like to do?
-│  � List all notes
-│  ✏️  Create a new note
-│  📝 Update a note
-```
-
-```
 bun-cli/src/
 ├── entity/         # TypeScript types
 ├── repository/     # Interface + Convex
@@ -308,11 +221,38 @@ bun-cli/src/
 └── ui/             # picocolors
 ```
 
-| Package          | Purpose         |
-| :--------------- | :-------------- |
-| `convex`         | Backend SDK     |
-| `@clack/prompts` | CLI prompts     |
-| `picocolors`     | Terminal colors |
+| Package          | Purpose     |
+| ---------------- | ----------- |
+| `convex`         | JS SDK      |
+| `@clack/prompts` | CLI prompts |
+| `picocolors`     | Colors      |
+
+<br>
+
+---
+
+<br>
+
+## 🐹 Go CLI
+
+> _Uber FX dependency injection + HTTP API_
+
+```
+go-cli/
+├── main.go           # uber/fx DI setup
+├── cmd/app.go        # Menu loop
+└── internal/
+    ├── entity/       # Note types
+    ├── repository/   # Interface + HTTP
+    ├── service/      # Business logic
+    └── handler/      # Commands
+```
+
+| Package       | Purpose              |
+| ------------- | -------------------- |
+| `uber/fx`     | Dependency injection |
+| `survey`      | CLI prompts          |
+| `tablewriter` | Pretty tables        |
 
 <br>
 
@@ -324,12 +264,11 @@ bun-cli/src/
 
 > _Glassmorphism UI with real-time updates_
 
-|     | Feature             | Description                    |
-| :-: | :------------------ | :----------------------------- |
-| 🌙  | **Dark Mode**       | Purple gradient backgrounds    |
-| 💫  | **Glassmorphism**   | Cards with backdrop blur       |
-| ⚡  | **Instant Updates** | Real-time Convex subscriptions |
-| 📱  | **Responsive**      | Mobile-first design            |
+| Feature          | Description          |
+| ---------------- | -------------------- |
+| 🌙 Dark Mode     | Purple gradients     |
+| 💫 Glassmorphism | Backdrop blur        |
+| ⚡ Real-time     | Convex subscriptions |
 
 <br>
 
@@ -341,14 +280,13 @@ bun-cli/src/
 
 ```
 📦 convex-notes/
-├── 🐳 docker-compose.yml      ← PostgreSQL + Convex
-├── 📋 Taskfile.yml            ← Task automation
-├── 📂 convex/                 ← Backend functions
-├── 🦀 backend/                ← Rust CLI (workspace)
-├── 🐍 python-cli/             ← Python CLI (uv)
-├── 🥟 bun-cli/                ← Bun CLI (TypeScript)
-├── ⚛️ frontend/               ← React application
-└── 💾 data/                   ← Local persistence
+├── 🐳 docker-compose.yml
+├── 📂 convex/           # Backend functions
+├── 🦀 backend/          # Rust CLI
+├── 🐍 python-cli/       # Python CLI
+├── 🥟 bun-cli/          # Bun CLI
+├── 🐹 go-cli/           # Go CLI
+└── ⚛️ frontend/         # React app
 ```
 
 <br>
@@ -357,56 +295,15 @@ bun-cli/src/
 
 <br>
 
-## 🛠️ Task Commands
+## 🛠️ Commands
 
-| Command             | Description                   |
-| :------------------ | :---------------------------- |
-| `task setup`        | Install all dependencies      |
-| `task docker:up`    | Start Docker containers       |
-| `task convex:dev`   | Push & watch Convex functions |
-| `task frontend:dev` | React at :3000                |
-| `task rust:run`     | Run Rust CLI                  |
-| `task python:run`   | Run Python CLI                |
-| `task bun:run`      | Run Bun CLI                   |
-
-<br>
-
----
-
-<br>
-
-## 🔗 Service URLs
-
-|     | Service       | URL                     |
-| :-: | :------------ | :---------------------- |
-| 🔧  | **Backend**   | `http://127.0.0.1:3210` |
-| 📊  | **Dashboard** | `http://localhost:9999` |
-| ⚛️  | **Frontend**  | `http://localhost:3000` |
-| 🐘  | **Postgres**  | `localhost:5432`        |
-
-<br>
-
----
-
-<br>
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><kbd>🔌 Connection failed</kbd></summary>
-
-1. Verify Docker is running: `docker ps`
-2. Check container logs: `task docker:logs`
-3. Ensure `.env.local` contains correct `CONVEX_URL`
-
-</details>
-
-<details>
-<summary><kbd>📦 Functions not found</kbd></summary>
-
-Run `task convex:dev` and wait for _"Convex functions ready!"_
-
-</details>
+| Command             | Description    |
+| ------------------- | -------------- |
+| `task rust:run`     | 🦀 Rust CLI    |
+| `task python:run`   | 🐍 Python CLI  |
+| `task bun:run`      | 🥟 Bun CLI     |
+| `task go:run`       | 🐹 Go CLI      |
+| `task frontend:dev` | ⚛️ React :3000 |
 
 <br>
 
@@ -416,13 +313,9 @@ Run `task convex:dev` and wait for _"Convex functions ready!"_
 
 <div align="center">
 
-### Built with ❤️ using
+### Built with ❤️
 
-[**Convex**](https://convex.dev) &nbsp;•&nbsp;
-[**Rust**](https://rust-lang.org) &nbsp;•&nbsp;
-[**Python**](https://python.org) &nbsp;•&nbsp;
-[**Bun**](https://bun.sh) &nbsp;•&nbsp;
-[**React**](https://react.dev)
+[**Convex**](https://convex.dev) • [**Rust**](https://rust-lang.org) • [**Python**](https://python.org) • [**Bun**](https://bun.sh) • [**Go**](https://go.dev) • [**React**](https://react.dev)
 
 <sub>MIT License © 2025</sub>
 

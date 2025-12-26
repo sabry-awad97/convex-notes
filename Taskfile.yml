@@ -257,3 +257,27 @@ tasks:
     dir: bun-cli
     cmds:
       - bun run src/index.ts
+
+  # ============================================================================
+  # 🐹 Go CLI Commands
+  # ============================================================================
+
+  go:install:
+    desc: Install Go CLI dependencies
+    dir: go-cli
+    cmds:
+      - go mod tidy
+      - echo "✅ Go dependencies installed"
+
+  go:run:
+    desc: Run Go CLI
+    dir: go-cli
+    cmds:
+      - go run .
+
+  go:build:
+    desc: Build Go CLI binary
+    dir: go-cli
+    cmds:
+      - go build -o convex-notes-cli .
+      - echo "✅ Built convex-notes-cli"

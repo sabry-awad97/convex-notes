@@ -8,6 +8,7 @@
 
 <img src="https://img.shields.io/badge/🔥_SELF--HOSTED-Convex_Backend-FF6B6B?style=for-the-badge&labelColor=1a1a2e" alt="Convex">
 <img src="https://img.shields.io/badge/🦀_RUST-CLI_Client-DDA15E?style=for-the-badge&labelColor=1a1a2e" alt="Rust">
+<img src="https://img.shields.io/badge/🐍_PYTHON-CLI_Client-3776AB?style=for-the-badge&labelColor=1a1a2e" alt="Python">
 <img src="https://img.shields.io/badge/⚛️_REACT-19_+_Vite_7-61DAFB?style=for-the-badge&labelColor=1a1a2e" alt="React">
 <img src="https://img.shields.io/badge/🐘_POSTGRES-Database-336791?style=for-the-badge&labelColor=1a1a2e" alt="PostgreSQL">
 
@@ -22,16 +23,16 @@
 [⚡ Quick Start](#-quick-start) &nbsp;•&nbsp;
 [🏗️ Architecture](#%EF%B8%8F-architecture) &nbsp;•&nbsp;
 [🦀 Rust CLI](#-rust-cli) &nbsp;•&nbsp;
-[⚛️ Frontend](#%EF%B8%8F-react-frontend) &nbsp;•&nbsp;
-[📚 Documentation](#-troubleshooting)
+[🐍 Python CLI](#-python-cli) &nbsp;•&nbsp;
+[⚛️ Frontend](#%EF%B8%8F-react-frontend)
 
 <br>
 
 <img src="https://img.shields.io/badge/Live_Sync-WebSocket-10B981?style=flat-square&logo=socket.io&logoColor=white" alt="WebSocket">
 <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker">
 <img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind">
-<img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
 <img src="https://img.shields.io/badge/Clean_Architecture-SOLID-9333ea?style=flat-square" alt="Clean Architecture">
+<img src="https://img.shields.io/badge/uv-Package_Manager-DE5FE9?style=flat-square" alt="uv">
 
 </div>
 
@@ -43,7 +44,7 @@
 
 ## 🎯 Why Convex Notes?
 
-> **Own your data. Control your backend. Build with Rust.**
+> **Own your data. Control your backend. Build in Rust or Python.**
 
 <table>
 <tr>
@@ -60,9 +61,18 @@
 <br>
 <img width="48" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/rust.svg" alt="Rust">
 <br><br>
-<strong>🦀 Rust Powered</strong>
+<strong>🦀 Rust CLI</strong>
 <br><br>
-<sub>Blazing fast CLI<br>Memory safe</sub>
+<sub>Blazing fast<br>Memory safe</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<img width="48" src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/icons/python.svg" alt="Python">
+<br><br>
+<strong>🐍 Python CLI</strong>
+<br><br>
+<sub>Rich terminal UI<br>Pydantic models</sub>
 <br><br>
 </td>
 <td align="center" width="25%">
@@ -72,15 +82,6 @@
 <strong>⚛️ Modern UI</strong>
 <br><br>
 <sub>React 19 + Vite 7<br>Glassmorphism</sub>
-<br><br>
-</td>
-<td align="center" width="25%">
-<br>
-<img width="48" src="https://cdn.simpleicons.org/clockify/03A9F4" alt="Realtime">
-<br><br>
-<strong>⚡ Real-Time</strong>
-<br><br>
-<sub>WebSocket sync<br>Instant updates</sub>
 <br><br>
 </td>
 </tr>
@@ -119,29 +120,23 @@ flowchart TB
 
     subgraph CLIENTS["👨‍💻 CLIENT APPLICATIONS"]
         direction LR
-        RUST["🦀 Rust CLI<br/>Interactive"]
+        RUST["🦀 Rust CLI"]
+        PYTHON["🐍 Python CLI"]
         REACT["⚛️ React App<br/>Port 3000"]
     end
 
-    subgraph FUNCTIONS["📂 CONVEX FUNCTIONS"]
-        direction LR
-        NOTES["notes.ts"]
-        SCHEMA["schema.ts"]
-    end
-
-    RUST <-. "⚡ WebSocket" .-> API
-    REACT <-. "⚡ WebSocket" .-> API
+    RUST <-. "WebSocket" .-> API
+    PYTHON <-. "WebSocket" .-> API
+    REACT <-. "WebSocket" .-> API
     API <--> PG
-    API --> HTTP
     DASH --> API
-    NOTES -.-> API
-    SCHEMA -.-> API
 
     style PG fill:#336791,stroke:#5A8DB8,stroke-width:2px,color:#fff
     style API fill:#ef4444,stroke:#f87171,stroke-width:2px,color:#fff
     style HTTP fill:#f59e0b,stroke:#fbbf24,stroke-width:2px,color:#000
     style DASH fill:#8b5cf6,stroke:#a78bfa,stroke-width:2px,color:#fff
     style RUST fill:#dda15e,stroke:#e5b97e,stroke-width:2px,color:#000
+    style PYTHON fill:#3776ab,stroke:#5a9bd4,stroke-width:2px,color:#fff
     style REACT fill:#61dafb,stroke:#81e4fc,stroke-width:2px,color:#000
 ```
 
@@ -160,7 +155,8 @@ flowchart TB
 |     | Tool       | Purpose           | Install                                |
 | :-: | :--------- | :---------------- | :------------------------------------- |
 | 🐳  | **Docker** | Container runtime | [↗ docker.com](https://docker.com)     |
-| 🦀  | **Rust**   | CLI application   | [↗ rustup.rs](https://rustup.rs)       |
+| 🦀  | **Rust**   | Rust CLI          | [↗ rustup.rs](https://rustup.rs)       |
+| 🐍  | **uv**     | Python CLI        | [↗ astral.sh/uv](https://astral.sh/uv) |
 | 📦  | **Bun**    | Package manager   | [↗ bun.sh](https://bun.sh)             |
 | 📋  | **Task**   | Task automation   | [↗ taskfile.dev](https://taskfile.dev) |
 
@@ -176,6 +172,7 @@ task setup && task docker:up && task admin:key
 task convex:dev      # Terminal 1 - Push functions
 task frontend:dev    # Terminal 2 - React frontend
 task rust:run        # Terminal 3 - Rust CLI
+task python:run      # Terminal 4 - Python CLI (alternative)
 ```
 
 <br>
@@ -215,7 +212,8 @@ task convex:dev
 
 # 5️⃣ Start applications (in separate terminals)
 task frontend:dev  # React at http://localhost:3000
-task rust:run      # Interactive Rust CLI
+task rust:run      # Rust CLI
+task python:run    # Python CLI (alternative)
 ```
 
 </details>
@@ -230,16 +228,14 @@ task rust:run      # Interactive Rust CLI
 
 <br>
 
-> ### _Beautiful terminal experience with interactive menus and clean architecture_
+> ### _Blazing fast terminal experience with clean architecture_
 
 <br>
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║                                                          ║
 ║           📝 CONVEX NOTES MANAGER                        ║
 ║         Self-Hosted • Rust Client • v0.1.0               ║
-║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
 
 🚀 Connecting to http://127.0.0.1:3210...
@@ -258,58 +254,80 @@ task rust:run      # Interactive Rust CLI
 
 ### 🏛️ Clean Architecture
 
-The Rust CLI follows **SOLID principles** with a workspace structure:
-
 ```
 backend/
 ├── Cargo.toml              # Workspace root
 └── crates/
-    ├── common/             # 🔧 Shared utilities (Config, Time)
-    ├── db/                 # 💾 Entity, Repository, Service layers
-    ├── convex-client/      # 🔗 Convex implementation of NoteRepository
-    └── cli/                # 🖥️ UI components and command handlers
+    ├── common/             # 🔧 Config & utilities
+    ├── db/                 # 💾 Entity, Repository, Service
+    ├── convex-client/      # 🔗 Convex adapter
+    └── cli/                # 🖥️ UI & handlers
 ```
 
 <br>
 
-### 📦 Dependencies
-
-| Crate            | Purpose             |     |
-| :--------------- | :------------------ | :-: |
-| `convex`         | Convex client SDK   | 🔗  |
-| `colored`        | Terminal colors     | 🎨  |
-| `dialoguer`      | Interactive prompts | 💬  |
-| `prettytable-rs` | Formatted tables    | 📊  |
-| `async-trait`    | Async trait support | 🔄  |
-| `tokio`          | Async runtime       | ⚡  |
+| Crate            | Purpose             |
+| :--------------- | :------------------ |
+| `convex`         | Convex client SDK   |
+| `colored`        | Terminal colors     |
+| `dialoguer`      | Interactive prompts |
+| `prettytable-rs` | Formatted tables    |
 
 <br>
 
-### 🔄 Data Flow
+---
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'actorBkg': '#1e293b', 'actorBorder': '#818cf8', 'actorTextColor': '#e0e7ff', 'signalColor': '#a5b4fc', 'signalTextColor': '#e0e7ff', 'noteBkgColor': '#3730a3', 'noteTextColor': '#e0e7ff', 'noteBorderColor': '#6366f1', 'activationBkgColor': '#4f46e5', 'sequenceNumberColor': '#fff'}}}%%
+<br>
 
-sequenceDiagram
-    autonumber
-    participant U as 👤 User
-    participant C as 🦀 CLI
-    participant S as 📦 Service
-    participant R as 🔗 Repository
-    participant B as ⚙️ Backend
+## 🐍 Python CLI
 
-    rect rgba(99, 102, 241, 0.15)
-        Note over U,B: ✏️ Create Note Flow
-        U->>C: Enter title & content
-        C->>S: service.create(note)
-        S->>R: repository.create(note)
-        R->>B: mutation("notes:create")
-        B-->>R: Note ID
-        R-->>S: Result
-        S-->>C: Success
-        C-->>U: ✅ "Note created!"
-    end
+<br>
+
+> ### _Beautiful Rich terminal UI with Pydantic validation_
+
+<br>
+
 ```
+╭──────────────────────────────────────────────────────────────╮
+│           📝 CONVEX NOTES MANAGER                            │
+│         Self-Hosted • Python Client • v0.1.0                 │
+╰──────────────────────────────────────────────────────────────╯
+
+🚀 Connecting to http://127.0.0.1:3210...
+✅ Connected to Convex backend!
+
+What would you like to do?
+  1. 📋 List all notes
+  2. ✏️  Create a new note
+  3. 📝 Update a note
+  4. 🗑️  Delete a note
+  5. 👀 Watch notes (real-time)
+  6. 🚪 Exit
+```
+
+<br>
+
+### 🏛️ Clean Architecture
+
+```
+python-cli/
+├── pyproject.toml          # uv project config
+└── src/convex_notes/
+    ├── entity/             # 📦 Pydantic models
+    ├── repository/         # 🔗 Protocol + Convex adapter
+    ├── service/            # 🧠 Business logic
+    ├── handlers/           # 🎯 Command handlers
+    └── ui/                 # 🎨 Rich components
+```
+
+<br>
+
+| Package    | Purpose            |
+| :--------- | :----------------- |
+| `convex`   | Convex client SDK  |
+| `rich`     | Beautiful terminal |
+| `pydantic` | Data validation    |
+| `typer`    | CLI framework      |
 
 <br>
 
@@ -338,21 +356,13 @@ mindmap
       TailwindCSS 4
       Glassmorphism
       Dark Mode
-    🛣️ Navigation
-      TanStack Router
-      File-based Routes
     📡 Data Layer
       Convex React
       Real-time Sync
       Optimistic UI
-    🧩 Components
-      shadcn/ui
-      Lucide Icons
 ```
 
 <br>
-
-### ✨ Features
 
 |     | Feature             | Description                    |
 | :-: | :------------------ | :----------------------------- |
@@ -360,7 +370,6 @@ mindmap
 | 💫  | **Glassmorphism**   | Cards with backdrop blur       |
 | ⚡  | **Instant Updates** | Real-time Convex subscriptions |
 | 📱  | **Responsive**      | Mobile-first design            |
-| 🚀  | **Optimistic UI**   | Immediate feedback on actions  |
 
 <br>
 
@@ -380,70 +389,20 @@ mindmap
 ├── 🔐 .env.local              ← Environment secrets (gitignored)
 │
 ├── 📂 convex/                 ← Convex backend functions
-│   ├── schema.ts              ← Database schema definition
-│   └── notes.ts               ← CRUD query & mutation handlers
+│   ├── schema.ts              ← Database schema
+│   └── notes.ts               ← CRUD handlers
 │
-├── 🦀 backend/                ← Rust CLI workspace
-│   ├── Cargo.toml             ← Workspace manifest
-│   └── crates/
-│       ├── common/            ← Config & utilities
-│       ├── db/                ← Entity, Repository, Service
-│       ├── convex-client/     ← Convex adapter
-│       └── cli/               ← UI & handlers
+├── 🦀 backend/                ← Rust CLI (workspace)
+│   └── crates/                ← common, db, convex-client, cli
+│
+├── 🐍 python-cli/             ← Python CLI (uv project)
+│   └── src/convex_notes/      ← entity, repository, service, handlers
 │
 ├── ⚛️ frontend/               ← React application
-│   └── src/
-│       ├── hooks/useNotes.ts  ← Convex data hooks
-│       ├── routes/index.tsx   ← Notes page component
-│       └── integrations/      ← Convex provider setup
+│   └── src/                   ← hooks, routes, integrations
 │
 └── 💾 data/                   ← Local persistence (gitignored)
-    ├── postgres/              ← PostgreSQL data files
-    └── convex/                ← Convex cache
 ```
-
-<br>
-
----
-
-<br>
-
-## 📝 Database Schema
-
-<br>
-
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1' }}}%%
-
-erDiagram
-    NOTES {
-        string _id PK "Auto-generated unique ID"
-        string title "Note title (required)"
-        string content "Note content (required)"
-        number createdAt "Creation timestamp (Unix ms)"
-        number updatedAt "Last update timestamp (Unix ms)"
-    }
-```
-
-<details>
-<summary><kbd>📄 View TypeScript Schema</kbd></summary>
-
-```typescript
-// convex/schema.ts
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
-
-export default defineSchema({
-  notes: defineTable({
-    title: v.string(),
-    content: v.string(),
-    createdAt: v.number(),
-    updatedAt: v.number(),
-  }).index("by_created", ["createdAt"]),
-});
-```
-
-</details>
 
 <br>
 
@@ -461,12 +420,10 @@ export default defineSchema({
 | `task setup`        | Install all dependencies       |
 | `task docker:up`    | Start Docker containers        |
 | `task docker:down`  | Stop Docker containers         |
-| `task docker:logs`  | View container logs            |
-| `task admin:key`    | Generate Convex admin key      |
 | `task convex:dev`   | Push & watch Convex functions  |
 | `task frontend:dev` | Start React development server |
-| `task rust:run`     | Run the Rust CLI application   |
-| `task rust:watch`   | Auto-rebuild on file changes   |
+| `task rust:run`     | Run Rust CLI                   |
+| `task python:run`   | Run Python CLI                 |
 
 <br>
 
@@ -529,21 +486,17 @@ netsh interface ipv4 show excludedportrange protocol=tcp
 
 Run `task convex:dev` and wait for the message: _"Convex functions ready!"_
 
-The development server must remain running to serve functions.
-
 </details>
 
 <details>
-<summary><kbd>🦀 Rust compilation errors</kbd></summary>
+<summary><kbd>🐍 Python errors</kbd></summary>
 
 <br>
 
 ```bash
-# Check for detailed error messages
-cargo check -p cli
-
-# Clear cache and rebuild
-cargo clean && cargo build --workspace
+cd python-cli
+uv sync          # Install dependencies
+uv run convex-notes  # Run CLI
 ```
 
 </details>
@@ -560,6 +513,7 @@ cargo clean && cargo build --workspace
 
 [**Convex**](https://convex.dev) &nbsp;•&nbsp;
 [**Rust**](https://rust-lang.org) &nbsp;•&nbsp;
+[**Python**](https://python.org) &nbsp;•&nbsp;
 [**React**](https://react.dev) &nbsp;•&nbsp;
 [**PostgreSQL**](https://postgresql.org)
 

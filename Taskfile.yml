@@ -217,3 +217,26 @@ tasks:
     dir: "{{.BACKEND_DIR}}"
     cmds:
       - cargo clippy
+
+  # ============================================================================
+  # 🐍 Python CLI Commands
+  # ============================================================================
+
+  python:install:
+    desc: Install Python CLI dependencies
+    dir: python-cli
+    cmds:
+      - uv sync
+      - echo "✅ Python dependencies installed"
+
+  python:run:
+    desc: Run Python CLI
+    dir: python-cli
+    cmds:
+      - uv run convex-notes
+
+  python:lint:
+    desc: Lint Python code
+    dir: python-cli
+    cmds:
+      - uv run ruff check src/

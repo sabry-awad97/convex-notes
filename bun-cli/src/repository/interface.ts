@@ -2,7 +2,7 @@
  * Repository interface for note data access using Effect.
  */
 
-import { Context, Effect } from "effect";
+import { Effect } from "effect";
 import type { CreateNote, Note, NoteId, UpdateNote } from "../entity/note";
 import type { ConvexError, NetworkError } from "../errors";
 
@@ -12,23 +12,15 @@ import type { ConvexError, NetworkError } from "../errors";
 export type RepositoryError = ConvexError | NetworkError;
 
 /**
- * NoteRepository service interface using Effect.
+ * NoteRepository service interface.
  */
-export interface NoteRepository {
+export interface NoteRepositoryShape {
   readonly list: () => Effect.Effect<Note[], RepositoryError>;
   readonly get: (id: NoteId) => Effect.Effect<Note | null, RepositoryError>;
   readonly create: (note: CreateNote) => Effect.Effect<NoteId, RepositoryError>;
   readonly update: (note: UpdateNote) => Effect.Effect<void, RepositoryError>;
   readonly delete: (id: NoteId) => Effect.Effect<void, RepositoryError>;
   readonly subscribe: (
-    callback: (notes: Note[]) => void
+    callback: (notes: Note[]) => void,
   ) => Effect.Effect<() => void, RepositoryError>;
 }
-
-/**
- * NoteRepository service tag for dependency injection.
- */
-export class NoteRepositoryTag extends Context.Tag("NoteRepository")<
-  NoteRepositoryTag,
-  NoteRepository
->() {}

@@ -44,7 +44,7 @@ export const run = Effect.gen(function* () {
       break;
     }
 
-    const result = yield* Effect.gen(function* () {
+    yield* Effect.gen(function* () {
       switch (choice as MenuChoice) {
         case "list":
           return yield* listHandler.execute;
@@ -64,7 +64,7 @@ export const run = Effect.gen(function* () {
       Effect.catchAll((error) => {
         console.log(pc.red(`\n❌ Error: ${error}`));
         return Effect.succeed(undefined);
-      })
+      }),
     );
 
     console.log();

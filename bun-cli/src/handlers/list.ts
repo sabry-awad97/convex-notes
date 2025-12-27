@@ -4,7 +4,7 @@
 
 import { Effect } from "effect";
 import pc from "picocolors";
-import { NoteServiceTag } from "../service/note-service";
+import { NoteService } from "../service/note-service";
 import { printNotesTable } from "../ui/table";
 
 /**
@@ -13,7 +13,7 @@ import { printNotesTable } from "../ui/table";
 export const execute = Effect.gen(function* () {
   console.log(pc.cyan("\n📋 Fetching notes..."));
 
-  const service = yield* NoteServiceTag;
+  const service = yield* NoteService;
   const notes = yield* service.list();
 
   if (notes.length === 0) {

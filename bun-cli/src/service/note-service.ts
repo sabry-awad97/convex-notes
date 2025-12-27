@@ -1,53 +1,44 @@
 /**
- * Note service for business logic using Effect.
+ * Note service for business logic using Effect.Service.
  */
 
-import { Context, Effect, Layer } from "effect";
-import type { Note, NoteId } from "../entity/note";
-import { NotFoundError, type AppError } from "../errors";
-import {
-  NoteRepositoryTag,
-  type RepositoryError,
-} from "../repository/interface";
+import { Effect } from "effect";
+import type { CreateNote, Note, NoteId, UpdateNote } from "../entity/note";
+import { NotFoundError } from "../errors";
+import { NoteRepository } from "../repository/convex";
+import type { RepositoryError } from "../repository/interface";
 
 /**
  * NoteService interface.
  */
-export interface NoteService {
+export interface NoteServiceShape {
   readonly list: () => Effect.Effect<Note[], RepositoryError>;
-  readonly get: (id: NoteId) => Effect.Effect<Note, AppError>;
+  readonly get: (
+    id: NoteId,
+  ) => Effect.Effect<Note, RepositoryError | NotFoundError>;
   readonly create: (
     title: string,
-    content: string
+    content: string,
   ) => Effect.Effect<NoteId, RepositoryError>;
   readonly update: (
     id: NoteId,
     title: string,
-    content: string
+    content: string,
   ) => Effect.Effect<void, RepositoryError>;
   readonly delete: (id: NoteId) => Effect.Effect<void, RepositoryError>;
   readonly subscribe: (
-    callback: (notes: Note[]) => void
+    callback: (notes: Note[]) => void,
   ) => Effect.Effect<() => void, RepositoryError>;
 }
 
 /**
- * NoteService tag for dependency injection.
+ * NoteService using Effect.Service pattern.
  */
-export class NoteServiceTag extends Context.Tag("NoteService")<
-  NoteServiceTag,
-  NoteService
->() {}
+export class NoteService extends Effect.Service<NoteService>()("NoteService", {
+  effect: Effect.gen(function* () {
+    const repo = yield* NoteRepository;
 
-/**
- * Live NoteService layer.
- */
-export const NoteServiceLive = Layer.effect(
-  NoteServiceTag,
-  Effect.gen(function* () {
-    const repo = yield* NoteRepositoryTag;
-
-    const service: NoteService = {
+    const service: NoteServiceShape = {
       list: () => repo.list(),
 
       get: (id: NoteId) =>
@@ -59,17 +50,17 @@ export const NoteServiceLive = Layer.effect(
                 message: `Note not found: ${id}`,
                 resourceType: "Note",
                 id,
-              })
+              }),
             );
           }
           return note;
         }),
 
       create: (title: string, content: string) =>
-        repo.create({ title, content }),
+        repo.create({ title, content } as CreateNote),
 
       update: (id: NoteId, title: string, content: string) =>
-        repo.update({ id, title, content }),
+        repo.update({ id, title, content } as UpdateNote),
 
       delete: (id: NoteId) => repo.delete(id),
 
@@ -78,5 +69,6 @@ export const NoteServiceLive = Layer.effect(
     };
 
     return service;
-  })
-);
+  }),
+  dependencies: [NoteRepository.Default],
+}) {}

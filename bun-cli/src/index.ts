@@ -2,53 +2,38 @@
  * Entry point for the Convex Notes CLI using Effect.
  */
 
-import { Effect, Layer, ManagedRuntime } from "effect";
+import { Effect, Layer } from "effect";
 import pc from "picocolors";
 import { run } from "./app";
-import { AppConfig, AppConfigLive } from "./config";
-import { ConvexRepositoryLive } from "./repository/convex";
-import { NoteServiceLive } from "./service/note-service";
+import { AppConfig } from "./config";
+import { NoteService } from "./service/note-service";
 
 // =============================================================================
-// Layer Composition
+// Layer Composition - NoteService.Default already includes AppConfig
 // =============================================================================
 
-/**
- * Main application layer composing all dependencies.
- * ConfigLive -> ConvexRepositoryLive -> NoteServiceLive
- */
-const MainLive = Layer.mergeAll(
-  AppConfigLive,
-  NoteServiceLive.pipe(
-    Layer.provide(ConvexRepositoryLive),
-    Layer.provide(AppConfigLive)
-  )
-);
+const MainLayer = Layer.merge(NoteService.Default, AppConfig.Default);
 
 // =============================================================================
-// Program Execution with ManagedRuntime
+// Program
 // =============================================================================
 
 const program = Effect.gen(function* () {
   const config = yield* AppConfig;
 
   console.log(
-    pc.cyan("🚀") + ` Connecting to ${pc.yellow(config.convexUrl)}...`
+    pc.cyan("🚀") + ` Connecting to ${pc.yellow(config.convexUrl)}...`,
   );
   console.log(pc.green("✅ Ready!\n"));
 
   yield* run;
 });
 
-// Create runtime and execute
-const runtime = ManagedRuntime.make(MainLive);
+// =============================================================================
+// Execute
+// =============================================================================
 
-runtime
-  .runPromise(program)
-  .catch((error) => {
-    console.error(pc.red(`Fatal error: ${error}`));
-    process.exit(1);
-  })
-  .finally(() => {
-    runtime.dispose();
-  });
+Effect.runPromise(program.pipe(Effect.provide(MainLayer))).catch((error) => {
+  console.error(pc.red(`Fatal error: ${error}`));
+  process.exit(1);
+});

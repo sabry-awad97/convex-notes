@@ -32,7 +32,7 @@ export type Note = typeof NoteSchema.Type;
  */
 export const CreateNoteSchema = Schema.Struct({
   title: Schema.String.pipe(
-    Schema.minLength(1, { message: () => "Title is required" })
+    Schema.minLength(1, { message: () => "Title is required" }),
   ),
   content: Schema.String,
 });

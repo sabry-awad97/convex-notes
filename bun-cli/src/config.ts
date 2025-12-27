@@ -1,27 +1,20 @@
 /**
- * Application configuration using Effect Config.
+ * Application configuration using Effect.Service pattern.
  */
 
-import { Config, Context, Layer } from "effect";
-
-/**
- * Application configuration schema.
- */
-export class AppConfig extends Context.Tag("AppConfig")<
-  AppConfig,
-  {
-    readonly convexUrl: string;
-  }
->() {}
+import { Config, Effect } from "effect";
 
 /**
- * Load configuration from environment.
+ * Application configuration service.
  */
-export const AppConfigLive = Layer.effect(
-  AppConfig,
-  Config.all({
-    convexUrl: Config.string("CONVEX_URL").pipe(
-      Config.withDefault("http://127.0.0.1:3210")
-    ),
-  })
-);
+export class AppConfig extends Effect.Service<AppConfig>()("AppConfig", {
+  effect: Effect.gen(function* () {
+    const convexUrl = yield* Config.string("CONVEX_URL").pipe(
+      Config.withDefault("http://127.0.0.1:3210"),
+    );
+
+    return {
+      convexUrl,
+    };
+  }),
+}) {}

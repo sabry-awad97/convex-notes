@@ -7,7 +7,7 @@ import { Effect } from "effect";
 import pc from "picocolors";
 import type { NoteId } from "../entity/note";
 import { UserCancelledError, ValidationError } from "../errors";
-import { NoteServiceTag } from "../service/note-service";
+import { NoteService } from "../service/note-service";
 
 /**
  * Execute delete command.
@@ -15,7 +15,7 @@ import { NoteServiceTag } from "../service/note-service";
 export const execute = Effect.gen(function* () {
   console.log(pc.red("\n🗑️ Delete a note"));
 
-  const service = yield* NoteServiceTag;
+  const service = yield* NoteService;
   const notes = yield* service.list();
 
   if (notes.length === 0) {

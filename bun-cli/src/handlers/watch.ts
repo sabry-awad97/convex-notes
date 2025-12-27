@@ -4,7 +4,7 @@
 
 import { Effect } from "effect";
 import pc from "picocolors";
-import { NoteServiceTag } from "../service/note-service";
+import { NoteService } from "../service/note-service";
 import { printNotesTable } from "../ui/table";
 
 /**
@@ -13,7 +13,7 @@ import { printNotesTable } from "../ui/table";
 export const execute = Effect.gen(function* () {
   console.log(pc.magenta("\n👀 Watching notes (press Ctrl+C to stop)...\n"));
 
-  const service = yield* NoteServiceTag;
+  const service = yield* NoteService;
 
   const unsubscribe = yield* service.subscribe((notes) => {
     console.clear();

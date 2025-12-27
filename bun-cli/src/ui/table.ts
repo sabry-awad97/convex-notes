@@ -18,7 +18,7 @@ export function printNotesTable(notes: Note[]): void {
     pc.bold(pc.cyan("ID".padEnd(14))) +
       pc.bold(pc.yellow("Title".padEnd(20))) +
       pc.bold(pc.white("Content".padEnd(45))) +
-      pc.bold(pc.magenta("Created"))
+      pc.bold(pc.magenta("Created")),
   );
   console.log(pc.dim("─".repeat(95)));
 
@@ -28,7 +28,7 @@ export function printNotesTable(notes: Note[]): void {
       pc.cyan(shortId(note.id).padEnd(14)) +
         pc.yellow(note.title.slice(0, 18).padEnd(20)) +
         contentPreview(note.content).padEnd(45) +
-        pc.magenta(formatTimestamp(note.createdAt))
+        pc.magenta(formatTimestamp(note.createdAt)),
     );
   }
   console.log();

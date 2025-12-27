@@ -6,7 +6,7 @@ import * as p from "@clack/prompts";
 import { Effect } from "effect";
 import pc from "picocolors";
 import { UserCancelledError, ValidationError } from "../errors";
-import { NoteServiceTag } from "../service/note-service";
+import { NoteService } from "../service/note-service";
 
 /**
  * Execute create command.
@@ -44,7 +44,7 @@ export const execute = Effect.gen(function* () {
     return yield* Effect.fail(new UserCancelledError({ message: "Cancelled" }));
   }
 
-  const service = yield* NoteServiceTag;
+  const service = yield* NoteService;
   const id = yield* service.create(String(title), String(content));
 
   console.log(pc.green(`\n✅ Note created with ID: ${pc.cyan(id)}`));

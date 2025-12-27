@@ -24,8 +24,8 @@ services:
   backend:
     image: ghcr.io/get-convex/convex-backend:latest
     ports:
-      - "3210:3210"  # Convex API
-      - "3211:3211"  # HTTP Actions
+      - "3210:3210" # Convex API
+      - "3211:3211" # HTTP Actions
     volumes:
       - ./data/convex:/convex/data
     environment:

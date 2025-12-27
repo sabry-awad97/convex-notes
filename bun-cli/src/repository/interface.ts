@@ -1,14 +1,34 @@
 /**
- * Repository interface for note data access.
+ * Repository interface for note data access using Effect.
  */
 
-import type { CreateNote, Note, UpdateNote } from "../entity/note";
+import { Context, Effect } from "effect";
+import type { CreateNote, Note, NoteId, UpdateNote } from "../entity/note";
+import type { ConvexError, NetworkError } from "../errors";
 
+/**
+ * Repository error type.
+ */
+export type RepositoryError = ConvexError | NetworkError;
+
+/**
+ * NoteRepository service interface using Effect.
+ */
 export interface NoteRepository {
-  list(): Promise<Note[]>;
-  get(id: string): Promise<Note | null>;
-  create(note: CreateNote): Promise<string>;
-  update(note: UpdateNote): Promise<void>;
-  delete(id: string): Promise<void>;
-  subscribe(callback: (notes: Note[]) => void): () => void;
+  readonly list: () => Effect.Effect<Note[], RepositoryError>;
+  readonly get: (id: NoteId) => Effect.Effect<Note | null, RepositoryError>;
+  readonly create: (note: CreateNote) => Effect.Effect<NoteId, RepositoryError>;
+  readonly update: (note: UpdateNote) => Effect.Effect<void, RepositoryError>;
+  readonly delete: (id: NoteId) => Effect.Effect<void, RepositoryError>;
+  readonly subscribe: (
+    callback: (notes: Note[]) => void
+  ) => Effect.Effect<() => void, RepositoryError>;
 }
+
+/**
+ * NoteRepository service tag for dependency injection.
+ */
+export class NoteRepositoryTag extends Context.Tag("NoteRepository")<
+  NoteRepositoryTag,
+  NoteRepository
+>() {}

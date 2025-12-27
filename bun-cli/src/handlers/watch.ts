@@ -1,51 +1,37 @@
 /**
- * Watch notes handler (real-time subscription).
+ * Watch notes handler using Effect (real-time updates).
  */
 
+import { Effect } from "effect";
 import pc from "picocolors";
-import type { NoteService } from "../service/note-service";
-import { displayNotes } from "../ui/table";
+import { NoteServiceTag } from "../service/note-service";
+import { printNotesTable } from "../ui/table";
 
-export async function execute(service: NoteService): Promise<void> {
-  console.log(
-    pc.magenta(pc.bold("\n👀 Watching notes for real-time updates...")),
-  );
-  console.log(pc.dim("   Press Ctrl+C to stop\n"));
+/**
+ * Execute watch command.
+ */
+export const execute = Effect.gen(function* () {
+  console.log(pc.magenta("\n👀 Watching notes (press Ctrl+C to stop)...\n"));
 
-  let unsubscribe: (() => void) | null = null;
-  let stopped = false;
+  const service = yield* NoteServiceTag;
 
-  // Set up Ctrl+C handler
-  const handleInterrupt = () => {
-    if (stopped) return;
-    stopped = true;
-    if (unsubscribe) {
-      try {
-        unsubscribe();
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-    console.log(pc.magenta("\n👋 Stopped watching."));
-    process.removeListener("SIGINT", handleInterrupt);
-  };
+  const unsubscribe = yield* service.subscribe((notes) => {
+    console.clear();
+    console.log(pc.magenta("👀 Real-time Notes (Ctrl+C to stop)\n"));
 
-  process.on("SIGINT", handleInterrupt);
-
-  // Start subscription
-  unsubscribe = service.subscribe((notes) => {
-    if (stopped) return;
-    console.log(pc.cyan("📨") + " " + pc.white("Update received:"));
     if (notes.length === 0) {
-      console.log(pc.yellow("   No notes"));
+      console.log(pc.yellow("📭 No notes yet."));
     } else {
-      displayNotes(notes);
+      printNotesTable(notes);
     }
-    console.log(pc.dim("─".repeat(50)));
   });
 
-  // Wait until stopped
-  while (!stopped) {
-    await Bun.sleep(100);
-  }
-}
+  // Wait for interrupt
+  yield* Effect.async<void, never>((resume) => {
+    process.on("SIGINT", () => {
+      unsubscribe();
+      console.log(pc.yellow("\n\n👋 Stopped watching."));
+      resume(Effect.succeed(undefined));
+    });
+  });
+});

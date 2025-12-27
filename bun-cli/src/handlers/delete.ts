@@ -1,41 +1,54 @@
 /**
- * Delete note handler.
+ * Delete note handler using Effect.
  */
 
 import * as p from "@clack/prompts";
+import { Effect } from "effect";
 import pc from "picocolors";
-import type { NoteService } from "../service/note-service";
+import type { NoteId } from "../entity/note";
+import { UserCancelledError, ValidationError } from "../errors";
+import { NoteServiceTag } from "../service/note-service";
 
-export async function execute(service: NoteService): Promise<void> {
-  console.log(pc.red(pc.bold("\n🗑️ Delete a note")));
+/**
+ * Execute delete command.
+ */
+export const execute = Effect.gen(function* () {
+  console.log(pc.red("\n🗑️ Delete a note"));
 
-  const notes = await service.list();
+  const service = yield* NoteServiceTag;
+  const notes = yield* service.list();
 
   if (notes.length === 0) {
     console.log(pc.yellow("📭 No notes to delete."));
     return;
   }
 
-  const options = notes.map((note) => ({
-    value: note.id,
-    label: note.title,
-  }));
-
-  const selectedId = await p.select({
-    message: "Select a note to delete",
-    options,
+  const selected = yield* Effect.tryPromise({
+    try: () =>
+      p.select({
+        message: "Select a note to delete:",
+        options: notes.map((n) => ({
+          value: n.id,
+          label: n.title,
+          hint: n.content.slice(0, 30),
+        })),
+      }),
+    catch: () => new ValidationError({ message: "Failed to select note" }),
   });
 
-  if (p.isCancel(selectedId)) {
-    console.log(pc.yellow("Cancelled."));
-    return;
+  if (p.isCancel(selected)) {
+    return yield* Effect.fail(new UserCancelledError({ message: "Cancelled" }));
   }
 
-  const selected = notes.find((n) => n.id === selectedId)!;
+  const noteId = selected as NoteId;
+  const note = notes.find((n) => n.id === noteId);
 
-  const confirmed = await p.confirm({
-    message: `Are you sure you want to delete '${pc.yellow(selected.title)}'?`,
-    initialValue: false,
+  const confirmed = yield* Effect.tryPromise({
+    try: () =>
+      p.confirm({
+        message: `Are you sure you want to delete "${note?.title}"?`,
+      }),
+    catch: () => new ValidationError({ message: "Failed to confirm" }),
   });
 
   if (p.isCancel(confirmed) || !confirmed) {
@@ -43,14 +56,7 @@ export async function execute(service: NoteService): Promise<void> {
     return;
   }
 
-  try {
-    await service.delete(selectedId as string);
-    console.log(
-      pc.green(
-        `\n✅ Note '${pc.strikethrough(pc.red(selected.title))}' deleted.`,
-      ),
-    );
-  } catch (error) {
-    console.log(pc.red(`❌ Failed to delete note: ${error}`));
-  }
-}
+  yield* service.delete(noteId);
+
+  console.log(pc.green(`\n✅ Note "${note?.title}" deleted.`));
+});

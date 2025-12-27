@@ -4,11 +4,14 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun --watch run src/index.ts"
+    "dev": "bun --watch run src/index.ts",
+    "typecheck": "bunx --bun tsc --noEmit"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
+    "@effect/schema": "^0.75.5",
     "convex": "^1.31.2",
+    "effect": "^3.19.13",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {

@@ -1,20 +1,26 @@
 /**
- * List notes handler.
+ * List notes handler using Effect.
  */
 
+import { Effect } from "effect";
 import pc from "picocolors";
-import type { NoteService } from "../service/note-service";
-import { displayNotes } from "../ui/table";
+import { NoteServiceTag } from "../service/note-service";
+import { printNotesTable } from "../ui/table";
 
-export async function execute(service: NoteService): Promise<void> {
-  console.log(pc.blue("\n📋 Fetching notes..."));
+/**
+ * Execute list command.
+ */
+export const execute = Effect.gen(function* () {
+  console.log(pc.cyan("\n📋 Fetching notes..."));
 
-  const notes = await service.list();
+  const service = yield* NoteServiceTag;
+  const notes = yield* service.list();
 
   if (notes.length === 0) {
-    console.log(pc.yellow("\n📭 No notes found. Create your first one!"));
-  } else {
-    console.log(pc.green(`\nFound ${pc.bold(String(notes.length))} note(s)`));
-    displayNotes(notes);
+    console.log(pc.yellow("📭 No notes found."));
+    return;
   }
-}
+
+  console.log(pc.green(`\nFound ${notes.length} note(s)\n`));
+  printNotesTable(notes);
+});

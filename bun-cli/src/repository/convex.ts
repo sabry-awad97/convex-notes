@@ -1,60 +1,128 @@
 /**
- * Convex implementation of NoteRepository.
+ * Convex implementation of NoteRepository using Effect.
  */
 
 import { ConvexClient, ConvexHttpClient } from "convex/browser";
-import type { CreateNote, Note, UpdateNote } from "../entity/note";
+import { Effect, Layer } from "effect";
+import { AppConfig } from "../config";
+import type { CreateNote, Note, NoteId, UpdateNote } from "../entity/note";
 import { parseNote } from "../entity/note";
-import type { NoteRepository } from "./interface";
+import { ConvexError } from "../errors";
+import { NoteRepositoryTag, type NoteRepository } from "./interface";
 
-export class ConvexNoteRepository implements NoteRepository {
-  private httpClient: ConvexHttpClient;
-  private wsClient: ConvexClient;
+/**
+ * Create a Convex repository implementation.
+ */
+function makeConvexRepository(url: string): NoteRepository {
+  const httpClient = new ConvexHttpClient(url);
+  // Lazy WebSocket client - only created when subscribe() is called
+  let wsClient: ConvexClient | null = null;
 
-  constructor(url: string) {
-    this.httpClient = new ConvexHttpClient(url);
-    this.wsClient = new ConvexClient(url);
-  }
+  const getWsClient = () => {
+    if (!wsClient) {
+      wsClient = new ConvexClient(url);
+    }
+    return wsClient;
+  };
 
-  async list(): Promise<Note[]> {
-    const result = await this.httpClient.query("notes:list" as any, {});
-    return (result as unknown[]).map((item) =>
-      parseNote(item as Record<string, unknown>),
-    );
-  }
+  return {
+    list: () =>
+      Effect.tryPromise({
+        try: async () => {
+          const result = await httpClient.query("notes:list" as any, {});
+          return (result as unknown[]).map((item) =>
+            parseNote(item as Record<string, unknown>)
+          );
+        },
+        catch: (error) =>
+          new ConvexError({
+            message: String(error),
+            operation: "list",
+            cause: error,
+          }),
+      }),
 
-  async get(id: string): Promise<Note | null> {
-    const result = await this.httpClient.query("notes:get" as any, { id });
-    if (!result) return null;
-    return parseNote(result as Record<string, unknown>);
-  }
+    get: (id: NoteId) =>
+      Effect.tryPromise({
+        try: async () => {
+          const result = await httpClient.query("notes:get" as any, { id });
+          if (!result) return null;
+          return parseNote(result as Record<string, unknown>);
+        },
+        catch: (error) =>
+          new ConvexError({
+            message: String(error),
+            operation: "get",
+            cause: error,
+          }),
+      }),
 
-  async create(note: CreateNote): Promise<string> {
-    const result = await this.httpClient.mutation("notes:create" as any, {
-      title: note.title,
-      content: note.content,
-    });
-    return String(result);
-  }
+    create: (note: CreateNote) =>
+      Effect.tryPromise({
+        try: async () => {
+          const result = await httpClient.mutation("notes:create" as any, {
+            title: note.title,
+            content: note.content,
+          });
+          return String(result) as NoteId;
+        },
+        catch: (error) =>
+          new ConvexError({
+            message: String(error),
+            operation: "create",
+            cause: error,
+          }),
+      }),
 
-  async update(note: UpdateNote): Promise<void> {
-    await this.httpClient.mutation("notes:update" as any, {
-      id: note.id,
-      title: note.title,
-      content: note.content,
-    });
-  }
+    update: (note: UpdateNote) =>
+      Effect.tryPromise({
+        try: async () => {
+          await httpClient.mutation("notes:update" as any, {
+            id: note.id,
+            title: note.title,
+            content: note.content,
+          });
+        },
+        catch: (error) =>
+          new ConvexError({
+            message: String(error),
+            operation: "update",
+            cause: error,
+          }),
+      }),
 
-  async delete(id: string): Promise<void> {
-    await this.httpClient.mutation("notes:remove" as any, { id });
-  }
+    delete: (id: NoteId) =>
+      Effect.tryPromise({
+        try: async () => {
+          await httpClient.mutation("notes:remove" as any, { id });
+        },
+        catch: (error) =>
+          new ConvexError({
+            message: String(error),
+            operation: "delete",
+            cause: error,
+          }),
+      }),
 
-  subscribe(callback: (notes: Note[]) => void): () => void {
-    return this.wsClient.onUpdate("notes:list" as any, {}, (result) => {
-      const notes = (result as unknown[]).map((item) =>
-        parseNote(item as Record<string, unknown>),
-      );
-      callback(notes);
-    });
-  }
+    subscribe: (callback: (notes: Note[]) => void) =>
+      Effect.sync(() => {
+        return getWsClient().onUpdate("notes:list" as any, {}, (result) => {
+          const notes = (result as unknown[]).map((item) =>
+            parseNote(item as Record<string, unknown>)
+          );
+          callback(notes);
+        });
+      }),
+  };
 }
+
+/**
+ * Live layer for ConvexRepository - depends on AppConfig.
+ */
+export const ConvexRepositoryLive = Layer.effect(
+  NoteRepositoryTag,
+  Effect.gen(function* () {
+    const config = yield* AppConfig;
+    return makeConvexRepository(config.convexUrl);
+  })
+);

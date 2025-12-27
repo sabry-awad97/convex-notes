@@ -8,15 +8,13 @@ const list_handler = @import("handler/list.zig");
 const service = @import("service/note.zig");
 const NoteService = service.NoteService;
 const banner = @import("ui/banner.zig");
+const utils = @import("utils/zig016.zig");
 
 /// Run the application main loop.
 pub fn run(svc: *NoteService) void {
     banner.print();
 
-    const stdin = std.fs.File.stdin();
-    var threaded = std.Io.Threaded.init_single_threaded;
-    const io = threaded.io();
-    var reader_buf: [4096]u8 = undefined;
+    var buf: [4096]u8 = undefined;
 
     while (true) {
         std.debug.print(
@@ -29,12 +27,9 @@ pub fn run(svc: *NoteService) void {
             \\Enter choice: 
         , .{});
 
-        var file_reader = stdin.reader(io, &reader_buf);
-        const input = file_reader.interface.takeDelimiter('\n') catch null;
-        if (input == null) break;
+        const input = utils.readLine(&buf) orelse break;
 
-        const trimmed = std.mem.trim(u8, input.?, &[_]u8{ '\r', '\n', ' ' });
-        const choice = std.fmt.parseInt(u8, trimmed, 10) catch {
+        const choice = std.fmt.parseInt(u8, input, 10) catch {
             std.debug.print("\x1b[33mInvalid choice. Enter 1-4.\x1b[0m\n\n", .{});
             continue;
         };

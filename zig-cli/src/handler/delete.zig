@@ -4,6 +4,7 @@ const std = @import("std");
 
 const service = @import("../service/note.zig");
 const NoteService = service.NoteService;
+const utils = @import("../utils/zig016.zig");
 
 /// Execute delete command.
 pub fn execute(svc: *NoteService) void {
@@ -27,17 +28,10 @@ pub fn execute(svc: *NoteService) void {
     // Get selection
     std.debug.print("\nEnter number to delete (0 to cancel): ", .{});
 
-    const stdin = std.fs.File.stdin();
-    var threaded = std.Io.Threaded.init_single_threaded;
-    const io = threaded.io();
-    var reader_buf: [4096]u8 = undefined;
-    var file_reader = stdin.reader(io, &reader_buf);
+    var buf: [256]u8 = undefined;
+    const input = utils.readLine(&buf) orelse return;
 
-    const input = file_reader.interface.takeDelimiter('\n') catch null;
-    if (input == null) return;
-
-    const trimmed = std.mem.trim(u8, input.?, &[_]u8{ '\r', '\n', ' ' });
-    const idx = std.fmt.parseInt(usize, trimmed, 10) catch {
+    const idx = std.fmt.parseInt(usize, input, 10) catch {
         std.debug.print("\x1b[33mInvalid selection.\x1b[0m\n", .{});
         return;
     };

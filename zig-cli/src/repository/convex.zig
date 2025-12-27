@@ -6,6 +6,7 @@ const note = @import("../entity/note.zig");
 const Note = note.Note;
 const CreateNote = note.CreateNote;
 const UpdateNote = note.UpdateNote;
+const utils = @import("../utils/zig016.zig");
 
 pub const ConvexError = error{
     ConnectionFailed,
@@ -60,12 +61,6 @@ pub const ConvexRepository = struct {
     }
 
     fn callFunction(self: *ConvexRepository, fn_type: []const u8, path: []const u8, args: []const u8) ![]u8 {
-        var threaded = std.Io.Threaded.init_single_threaded;
-        const io = threaded.io();
-
-        var client = std.http.Client{ .allocator = self.allocator, .io = io };
-        defer client.deinit();
-
         // Build URL
         var url_buf: [256]u8 = undefined;
         const url_str = std.fmt.bufPrint(&url_buf, "{s}/api/{s}", .{ self.base_url, fn_type }) catch return ConvexError.ParseError;
@@ -74,23 +69,16 @@ pub const ConvexRepository = struct {
         var body_buf: [1024]u8 = undefined;
         const request_body = std.fmt.bufPrint(&body_buf, "{{\"path\":\"{s}\",\"args\":{s},\"format\":\"json\"}}", .{ path, args }) catch return ConvexError.ParseError;
 
-        // Create allocating writer for response body
-        var response_writer = std.Io.Writer.Allocating.init(self.allocator);
-
-        const result = client.fetch(.{
-            .location = .{ .url = url_str },
-            .method = .POST,
-            .payload = request_body,
-            .headers = .{ .content_type = .{ .override = "application/json" } },
-            .response_writer = &response_writer.writer,
-        }) catch return ConvexError.ConnectionFailed;
+        // Use httpPost helper from utils
+        var result = utils.httpPost(self.allocator, url_str, request_body) catch return ConvexError.ConnectionFailed;
 
         if (result.status != .ok) {
+            result.deinit();
             return ConvexError.ApiError;
         }
 
-        // Get the response body
-        return response_writer.toOwnedSlice() catch return ConvexError.OutOfMemory;
+        // Transfer ownership of body to caller
+        return result.body;
     }
 
     fn parseNotes(self: *ConvexRepository, body: []const u8) ![]Note {

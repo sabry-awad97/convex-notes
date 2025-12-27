@@ -5,6 +5,7 @@
 import * as p from "@clack/prompts";
 import { Effect } from "effect";
 import pc from "picocolors";
+import type { AppError } from "./errors";
 import * as createHandler from "./handlers/create";
 import * as deleteHandler from "./handlers/delete";
 import * as listHandler from "./handlers/list";
@@ -22,6 +23,28 @@ const MENU_OPTIONS = [
 ] as const;
 
 type MenuChoice = (typeof MENU_OPTIONS)[number]["value"];
+
+/**
+ * Execute a handler and widen error type to AppError.
+ */
+const executeHandler = (
+  choice: MenuChoice
+): Effect.Effect<void, AppError, unknown> => {
+  switch (choice) {
+    case "list":
+      return listHandler.execute;
+    case "create":
+      return createHandler.execute;
+    case "update":
+      return updateHandler.execute;
+    case "delete":
+      return deleteHandler.execute;
+    case "watch":
+      return watchHandler.execute;
+    default:
+      return Effect.void;
+  }
+};
 
 /**
  * Main application loop using Effect.
@@ -44,27 +67,26 @@ export const run = Effect.gen(function* () {
       break;
     }
 
-    yield* Effect.gen(function* () {
-      switch (choice as MenuChoice) {
-        case "list":
-          return yield* listHandler.execute;
-        case "create":
-          return yield* createHandler.execute;
-        case "update":
-          return yield* updateHandler.execute;
-        case "delete":
-          return yield* deleteHandler.execute;
-        case "watch":
-          return yield* watchHandler.execute;
-        default:
-          return;
-      }
-    }).pipe(
-      Effect.catchTag("UserCancelledError", () => Effect.succeed(undefined)),
-      Effect.catchAll((error) => {
-        console.log(pc.red(`\n❌ Error: ${error}`));
-        return Effect.succeed(undefined);
-      }),
+    yield* executeHandler(choice).pipe(
+      Effect.catchTags({
+        UserCancelledError: () => Effect.void,
+        ValidationError: (e) =>
+          Effect.sync(() =>
+            console.log(pc.yellow(`\n⚠️ Validation: ${e.message}`))
+          ),
+        ConvexError: (e) =>
+          Effect.sync(() =>
+            console.log(pc.red(`\n❌ API Error [${e.operation}]: ${e.message}`))
+          ),
+        NotFoundError: (e) =>
+          Effect.sync(() =>
+            console.log(pc.yellow(`\n⚠️ Not found: ${e.message}`))
+          ),
+        NetworkError: (e) =>
+          Effect.sync(() =>
+            console.log(pc.red(`\n🔌 Network Error: ${e.message}`))
+          ),
+      })
     );
 
     console.log();

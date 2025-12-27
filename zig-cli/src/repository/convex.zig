@@ -21,9 +21,9 @@ pub const ConvexRepository = struct {
     allocator: std.mem.Allocator,
     base_url: []const u8,
 
-    pub fn init(allocator: std.mem.Allocator, base_url: []const u8) ConvexRepository {
+    pub fn init(std_allocator: std.mem.Allocator, base_url: []const u8) ConvexRepository {
         return .{
-            .allocator = allocator,
+            .allocator = std_allocator,
             .base_url = base_url,
         };
     }
@@ -84,10 +84,10 @@ pub const ConvexRepository = struct {
     fn parseNotes(self: *ConvexRepository, body: []const u8) ![]Note {
         if (body.len == 0) return &[_]Note{};
 
-        const parsed = std.json.parseFromSlice(std.json.Value, self.allocator, body, .{}) catch return &[_]Note{};
-        defer parsed.deinit();
+        var json_res = utils.parseJson(self.allocator, body) orelse return &[_]Note{};
+        defer json_res.deinit();
 
-        const value = parsed.value.object.get("value") orelse return &[_]Note{};
+        const value = json_res.getField("value") orelse return &[_]Note{};
         if (value != .array) return &[_]Note{};
 
         // Count notes first

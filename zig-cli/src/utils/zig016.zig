@@ -4,6 +4,17 @@
 //! The "Writergate" changes in 0.15/0.16 significantly altered std.io, std.http, etc.
 
 const std = @import("std");
+/// Thread-local IO backend to ensure pointers to it remain valid.
+threadlocal var threaded_io = std.Io.Threaded.init_single_threaded;
+
+// =============================================================================
+// IO BACKEND
+// =============================================================================
+
+/// Get the IO interface from the thread-local backend.
+pub fn getIo() std.Io {
+    return threaded_io.io();
+}
 
 // =============================================================================
 // STDIN READING
@@ -61,8 +72,7 @@ pub const FetchResult = struct {
 /// std.debug.print("Response: {s}\n", .{result.body});
 /// ```
 pub fn httpPost(allocator: std.mem.Allocator, url: []const u8, json_body: []const u8) !FetchResult {
-    var threaded = getThreadedIo();
-    const io = threaded.io();
+    const io = getIo();
 
     var client = std.http.Client{ .allocator = allocator, .io = io };
     defer client.deinit();
@@ -90,8 +100,7 @@ pub fn httpPost(allocator: std.mem.Allocator, url: []const u8, json_body: []cons
 /// Perform an HTTP GET request.
 /// Returns the response body on success.
 pub fn httpGet(allocator: std.mem.Allocator, url: []const u8) !FetchResult {
-    var threaded = getThreadedIo();
-    const io = threaded.io();
+    const io = getIo();
 
     var client = std.http.Client{ .allocator = allocator, .io = io };
     defer client.deinit();
@@ -114,23 +123,6 @@ pub fn httpGet(allocator: std.mem.Allocator, url: []const u8) !FetchResult {
 }
 
 // =============================================================================
-// IO BACKEND
-// =============================================================================
-
-/// Get a single-threaded blocking Io instance.
-/// Required for file readers, HTTP clients, etc. in Zig 0.16-dev.
-///
-/// Example:
-/// ```zig
-/// var threaded = getThreadedIo();
-/// const io = threaded.io();
-/// var client = std.http.Client{ .allocator = alloc, .io = io };
-/// ```
-pub fn getThreadedIo() std.Io.Threaded {
-    return std.Io.Threaded.init_single_threaded;
-}
-
-// =============================================================================
 // FILE READING
 // =============================================================================
 
@@ -145,8 +137,7 @@ pub fn getThreadedIo() std.Io.Threaded {
 /// const line = file_reader.interface.takeDelimiter('\n') catch null;
 /// ```
 pub fn createFileReader(file: std.fs.File, buffer: []u8) std.Io.File.Reader {
-    var threaded = getThreadedIo();
-    const io = threaded.io();
+    const io = getIo();
     const io_file = std.Io.File{ .handle = file.handle };
     return io_file.reader(io, buffer);
 }
